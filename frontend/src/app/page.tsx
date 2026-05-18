@@ -7,7 +7,6 @@ import { useApi } from "@/hooks/useApi";
 import { productsService } from "@/services/products";
 import type { Product } from "@/types";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 export default function HomePage() {
   const { data: response, loading, execute } = useApi(productsService.getAll);
