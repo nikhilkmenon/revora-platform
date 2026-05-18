@@ -1,7 +1,10 @@
-# Multi-stage Dockerfile for Railway deployment
+# Multi-stage Dockerfile for Railway/GCP deployment
 FROM node:20-alpine AS builder
 
 WORKDIR /app
+
+# Install openssl for Prisma
+RUN apk add --no-cache openssl
 
 COPY package*.json ./
 COPY prisma ./prisma/
@@ -16,7 +19,8 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# Install openssl for Prisma in production
+RUN apk add --no-cache openssl
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
@@ -26,11 +30,7 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x docker-entrypoint.sh
 
-USER appuser
-
-EXPOSE 3000
-
-HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD wget -qO- http://localhost:3000/api/v1/health || exit 1
+# Expose port (Google Cloud Run binds dynamically to $PORT)
+EXPOSE 8080
 
 ENTRYPOINT ["./docker-entrypoint.sh"]

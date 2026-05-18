@@ -1,14 +1,13 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     // Allow images from common CDNs and our own backend storage
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
-      { protocol: "https", hostname: "**.railway.app" },       // Railway backend
-      { protocol: "https", hostname: "**.supabase.co" },       // Supabase storage if used
-      { protocol: "https", hostname: "**.cloudinary.com" },    // Cloudinary CDN if used
+      { protocol: "https", hostname: "**.railway.app" },
+      { protocol: "https", hostname: "**.supabase.co" },
+      { protocol: "https", hostname: "**.cloudinary.com" },
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "http", hostname: "localhost" },
     ],
