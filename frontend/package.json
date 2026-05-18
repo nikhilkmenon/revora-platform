@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm install @tailwindcss/oxide-linux-x64-gnu --no-save --legacy-peer-deps || true",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
