@@ -1,0 +1,313 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta name="description" content="Browse REVORA's exclusive marketplace — 1,248 luxury tech innovations from the world's top designers.">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<title>REVORA | Browse Collections</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e8e0ee",
+                    "on-secondary-container": "#fefcff",
+                    "surface": "#fef7ff",
+                    "primary-fixed": "#ebddff",
+                    "on-tertiary-fixed": "#321300",
+                    "on-secondary-fixed": "#00174b",
+                    "on-primary-fixed": "#250059",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#ffdbc8",
+                    "inverse-on-surface": "#f6eefc",
+                    "surface-bright": "#fef7ff",
+                    "on-tertiary-container": "#ffc19e",
+                    "surface-container-high": "#ede5f3",
+                    "primary-fixed-dim": "#d3bbff",
+                    "inverse-primary": "#d3bbff",
+                    "surface-container-highest": "#e8e0ee",
+                    "on-surface": "#1d1a24",
+                    "primary-container": "#6d28d9",
+                    "outline-variant": "#ccc3d7",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#4a4455",
+                    "tertiary": "#6b3000",
+                    "tertiary-container": "#8f4200",
+                    "background": "#fef7ff",
+                    "secondary": "#0051d5",
+                    "inverse-surface": "#332f39",
+                    "surface-container": "#f3ebf9",
+                    "secondary-fixed": "#dbe1ff",
+                    "surface-tint": "#7331df",
+                    "tertiary-fixed-dim": "#ffb68b",
+                    "on-background": "#1d1a24",
+                    "primary": "#5300b7",
+                    "secondary-container": "#316bf3",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#dac5ff",
+                    "surface-dim": "#dfd7e5",
+                    "on-tertiary-fixed-variant": "#743400",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#5b00c5",
+                    "secondary-fixed-dim": "#b4c5ff",
+                    "outline": "#7b7486",
+                    "on-tertiary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#f9f1ff",
+                    "on-secondary-fixed-variant": "#003ea8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "margin-mobile": "20px",
+                    "stack-md": "32px",
+                    "base": "8px",
+                    "margin-desktop": "64px",
+                    "stack-sm": "12px",
+                    "gutter": "24px",
+                    "stack-lg": "80px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Sora"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Sora"],
+                    "display-lg-mobile": ["Sora"],
+                    "headline-sm": ["Sora"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl shadow-sm">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-gutter">
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary dark:text-primary-fixed">REVORA</span>
+<nav class="hidden md:flex items-center gap-stack-md">
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed border-b-2 border-primary pb-1 transition-all duration-300 ease-out hover:text-primary hover:scale-105" href="#">Marketplace</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant transition-all duration-300 ease-out hover:text-primary hover:scale-105" href="#">Designers</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant transition-all duration-300 ease-out hover:text-primary hover:scale-105" href="#">Editorial</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant transition-all duration-300 ease-out hover:text-primary hover:scale-105" href="#">Collections</a>
+</nav>
+</div>
+<div class="flex items-center gap-gutter flex-1 max-w-xl mx-gutter">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary text-body-md font-body-md" placeholder="Search curated technology..." type="text">
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="flex items-center gap-base font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+<button class="flex items-center gap-base font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md text-label-md hover:scale-105 transition-transform duration-200">Account</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-stack-lg max-w-container-max mx-auto px-margin-desktop">
+<!-- Page Header & Sort -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-stack-md gap-gutter">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface">Marketplace</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2">Discover 1,248 exclusive luxury tech innovations.</p>
+</div>
+<div class="flex items-center gap-base bg-surface-container-low p-2 rounded-lg border border-outline-variant/30">
+<span class="font-label-md text-label-md text-on-surface-variant px-2">Sort by:</span>
+<select class="bg-transparent border-none focus:ring-0 font-label-md text-label-md text-on-surface pr-8">
+<option>Featured</option>
+<option>Newest Arrivals</option>
+<option>Price: High to Low</option>
+<option>Price: Low to High</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Sidebar Filters -->
+<aside class="md:col-span-3 space-y-stack-md">
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/20">
+<div class="flex justify-between items-center mb-stack-sm">
+<h3 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Category</h3>
+<span class="material-symbols-outlined text-primary text-[20px]">keyboard_arrow_up</span>
+</div>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded-md border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Wearable Tech</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-md border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Home Audio</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-md border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Digital Art Tools</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-md border-outline text-primary focus:ring-primary w-5 h-5" type="checkbox">
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Smart Living</span>
+</label>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/20">
+<h3 class="font-label-md text-label-md text-on-surface mb-stack-sm uppercase tracking-widest">Price Range</h3>
+<div class="space-y-4">
+<div class="h-1 bg-surface-variant rounded-full relative">
+<div class="absolute inset-y-0 left-1/4 right-1/4 bg-primary rounded-full"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-1/4 w-4 h-4 bg-primary border-2 border-surface rounded-full shadow-sm"></div>
+<div class="absolute top-1/2 -translate-y-1/2 right-1/4 w-4 h-4 bg-primary border-2 border-surface rounded-full shadow-sm"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-md text-label-md text-on-surface-variant">$500</span>
+<span class="font-label-md text-label-md text-on-surface-variant">$5,000+</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-lg border border-outline-variant/20">
+<h3 class="font-label-md text-label-md text-on-surface mb-stack-sm uppercase tracking-widest">Material</h3>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md">Titanium</button>
+<button class="px-4 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md hover:bg-outline-variant/30">Ceramic</button>
+<button class="px-4 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md hover:bg-outline-variant/30">Sapphire</button>
+<button class="px-4 py-2 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-label-md hover:bg-outline-variant/30">Bio-Polymer</button>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<div class="md:col-span-9">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter" id="products-grid"><!-- Products will be loaded here dynamically from SQLite --></div>
+<!-- Pagination -->
+<div class="mt-stack-lg flex items-center justify-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-on-primary font-label-md text-label-md">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-outline-variant/30 font-label-md text-label-md">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-outline-variant/30 font-label-md text-label-md">3</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-outline-variant/30 font-label-md text-label-md">12</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch('/api/products');
+    const { data } = await res.json();
+    const grid = document.getElementById('products-grid');
+    
+    if (data.length === 0) {
+      grid.innerHTML = '<p class="col-span-full text-center text-on-surface-variant py-20">No products found in the database. Add products via the API.</p>';
+      return;
+    }
+
+    grid.innerHTML = data.map(product => `
+      <div class="group relative flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-transparent hover:border-outline-variant/20">
+        <div class="aspect-[4/5] overflow-hidden bg-surface-dim relative">
+          <img class="w-full h-full object-cover" src="${product.image_url || ''}" alt="${product.name}"/>
+        </div>
+        <div class="p-6 flex-1 flex flex-col">
+          <div class="flex justify-between items-start mb-2">
+            <span class="font-label-md text-label-md text-on-surface-variant opacity-70">${product.designer || 'REVORA Designer'}</span>
+          </div>
+          <h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">${product.name}</h3>
+          <div class="mt-auto flex items-center justify-between">
+            <span class="font-headline-sm text-headline-sm text-on-surface">$${product.price}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    console.error(e);
+  }
+});
+</script>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-inverse-surface w-full py-stack-lg border-t border-outline-variant/20">
+<div class="grid grid-cols-1 md:grid-cols-4 px-margin-desktop max-w-container-max mx-auto gap-stack-md">
+<div class="flex flex-col gap-base">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">REVORA</span>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80 mt-2">
+                    Defining the intersection of luxury and technology since 2024.
+                </p>
+<div class="flex gap-4 mt-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">public</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">photo_camera</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">video_library</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-widest">Shop</h4>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">Marketplace</a>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">Collections</a>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">Designers</a>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">New Arrivals</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-widest">Support</h4>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">Contact</a>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">Terms</a>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">Careers</a>
+<a class="font-label-md text-label-md text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity" href="#">Sustainability</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-widest">Newsletter</h4>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">Subscribe for early access to drops.</p>
+<div class="flex gap-2 mt-2">
+<input class="bg-surface-container border-none rounded-lg flex-1 py-2 px-4 focus:ring-1 focus:ring-primary text-body-md" placeholder="Email" type="email">
+<button class="bg-primary text-on-primary p-2 rounded-lg transition-transform hover:scale-105">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-stack-lg pt-base border-t border-outline-variant/10">
+<p class="font-label-md text-label-md text-on-surface-variant opacity-60 text-center">
+                © 2024 REVORA Luxury Tech. All rights reserved.
+            </p>
+</div>
+</footer>
+</body></html>

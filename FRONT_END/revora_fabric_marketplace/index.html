@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="REVORA Fabric Marketplace — source exclusive textiles from Italian, Japanese, and global premium mills for your designs.">
+<title>REVORA | Fabric Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+tailwind.config={darkMode:"class",theme:{extend:{colors:{
+  "surface":"#fef7ff","primary":"#5300b7","on-primary":"#ffffff","primary-container":"#6d28d9",
+  "on-primary-container":"#dac5ff","primary-fixed":"#ebddff","on-primary-fixed":"#250059",
+  "surface-variant":"#e8e0ee","on-surface-variant":"#4a4455","on-surface":"#1d1a24",
+  "outline":"#7b7486","outline-variant":"#ccc3d7","surface-container":"#f3ebf9",
+  "surface-container-low":"#f9f1ff","surface-container-lowest":"#ffffff",
+  "surface-container-high":"#ede5f3","surface-dim":"#dfd7e5","background":"#fef7ff",
+  "secondary":"#0051d5","error":"#ba1a1a","surface-container-highest":"#e8e0ee",
+  "tertiary-fixed":"#ffdbc8","tertiary":"#6b3000"
+},fontFamily:{"headline":["Sora","sans-serif"],"body":["Inter","sans-serif"]}}}}
+</script>
+<style>
+*{box-sizing:border-box}body{font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;background:#fef7ff;color:#1d1a24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle}
+.glass-nav{background:rgba(254,247,255,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.fabric-card{background:#ffffff;border:1.5px solid #e8e0ee;border-radius:20px;overflow:hidden;transition:all .3s;cursor:pointer}
+.fabric-card:hover{border-color:#5300b7;box-shadow:0 8px 32px rgba(83,0,183,.1);transform:translateY(-4px)}
+.tag{display:inline-block;padding:3px 10px;border-radius:100px;background:#e8e0ee;color:#4a4455;font-size:10px;font-weight:700;letter-spacing:.06em}
+.filter-btn{padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;border:1.5px solid #ccc3d7;cursor:pointer;transition:all .2s;background:transparent;color:#4a4455}
+.filter-btn:hover,.filter-btn.active{border-color:#5300b7;background:#5300b7;color:#ffffff}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<header class="fixed top-0 w-full z-50 glass-nav shadow-sm">
+  <nav class="flex justify-between items-center px-16 py-4 max-w-screen-xl mx-auto">
+    <div class="flex items-center gap-8">
+      <a href="../revora_minimal_luxury_home/code.html" class="font-headline text-2xl font-bold tracking-tighter text-primary" aria-label="REVORA Home">REVORA</a>
+      <div class="hidden md:flex gap-6">
+        <a href="../revora_minimal_luxury_home/code.html" class="text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">Marketplace</a>
+        <a href="#" class="text-primary border-b-2 border-primary pb-0.5 text-sm font-medium" aria-current="page">Fabrics</a>
+        <a href="../revora_browse_collections/code.html" class="text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">Collections</a>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="relative hidden lg:block">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl" aria-hidden="true">search</span>
+        <input type="search" placeholder="Search fabrics, mills..." class="pl-10 pr-4 py-2 bg-surface-container rounded-full text-sm border-none focus:ring-2 focus:ring-primary w-56" autocomplete="off" aria-label="Search fabrics">
+      </div>
+      <a href="../revora_auth/index.html" class="px-5 py-2 bg-primary text-on-primary rounded-full text-sm font-bold hover:opacity-90 transition-opacity">Account</a>
+    </div>
+  </nav>
+</header>
+
+<main class="pt-24 pb-20">
+
+  <!-- Hero Banner -->
+  <section class="px-16 max-w-screen-xl mx-auto mb-12">
+    <div class="bg-primary rounded-3xl p-12 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10" style="background:radial-gradient(circle at 80% 50%,rgba(255,255,255,.6) 0%,transparent 60%)"></div>
+      <div class="relative z-10 max-w-2xl">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-white/15 text-white/80 text-xs font-semibold tracking-widest mb-4">FABRIC MARKETPLACE</span>
+        <h1 class="font-headline text-5xl font-bold text-white leading-tight mb-4">Source the World's<br>Most Exclusive Textiles</h1>
+        <p class="text-white/70 text-lg mb-6">Direct access to Italian, Japanese, and German premium mills with MOQ as low as 50 yards.</p>
+        <div class="flex gap-3 flex-wrap">
+          <button class="px-6 py-3 bg-white text-primary rounded-full text-sm font-bold hover:scale-105 transition-transform" aria-label="Browse all fabrics">Browse All Fabrics</button>
+          <a href="../revora_supplier_portal/index.html" class="px-6 py-3 border-2 border-white/40 text-white rounded-full text-sm font-semibold hover:bg-white/10 transition-colors">List Your Fabric →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="px-16 max-w-screen-xl mx-auto mb-8" aria-label="Filter fabrics">
+    <div class="flex gap-2 flex-wrap">
+      <button class="filter-btn active" onclick="setFilter(this,'All')" aria-pressed="true">All Fabrics</button>
+      <button class="filter-btn" onclick="setFilter(this,'Silk')" aria-pressed="false">Silk</button>
+      <button class="filter-btn" onclick="setFilter(this,'Wool')" aria-pressed="false">Wool</button>
+      <button class="filter-btn" onclick="setFilter(this,'Cotton')" aria-pressed="false">Cotton</button>
+      <button class="filter-btn" onclick="setFilter(this,'Sustainable')" aria-pressed="false">Sustainable</button>
+      <button class="filter-btn" onclick="setFilter(this,'Technical')" aria-pressed="false">Technical</button>
+      <button class="filter-btn" onclick="setFilter(this,'Denim')" aria-pressed="false">Denim</button>
+    </div>
+  </section>
+
+  <!-- Fabric Grid -->
+  <section class="px-16 max-w-screen-xl mx-auto" aria-label="Fabric catalog">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="fabrics-grid"></div>
+
+    <!-- Pagination -->
+    <nav class="flex justify-center gap-2 mt-12" aria-label="Fabric catalog pagination">
+      <button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors" aria-label="Previous page"><span class="material-symbols-outlined" aria-hidden="true">chevron_left</span></button>
+      <button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-on-primary font-bold text-sm" aria-current="page" aria-label="Page 1">1</button>
+      <button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-on-surface-variant hover:bg-outline-variant/30 font-bold text-sm" aria-label="Page 2">2</button>
+      <button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-on-surface-variant hover:bg-outline-variant/30 font-bold text-sm" aria-label="Page 3">3</button>
+      <button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container text-on-surface-variant hover:bg-primary hover:text-on-primary transition-colors" aria-label="Next page"><span class="material-symbols-outlined" aria-hidden="true">chevron_right</span></button>
+    </nav>
+  
+<script src="../revora_shared/revora-shared.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await authFetch(`${API}/fabrics`);
+    const { data } = await res.json();
+    const grid = document.getElementById('fabrics-grid');
+    
+    if (data.length === 0) {
+      grid.innerHTML = '<p class="col-span-full text-center text-on-surface-variant py-20">Database is empty. No fabric samples available.</p>';
+      return;
+    }
+
+    grid.innerHTML = data.map(fabric => `
+      <article class="fabric-card">
+        <div class="aspect-square bg-surface-dim overflow-hidden">
+          <img src="${fabric.image_url}" class="w-full h-full object-cover"/>
+        </div>
+        <div class="p-5">
+          <p class="font-headline text-base font-bold text-on-surface">${fabric.name}</p>
+          <span class="font-bold text-primary text-sm">$${fabric.price}/yd</span>
+        </div>
+      </article>
+    `).join('');
+  } catch(e) {
+    console.error(e);
+  }
+});
+</script>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface-container-highest border-t border-outline-variant/20 py-16">
+  <div class="grid grid-cols-1 md:grid-cols-4 px-16 max-w-screen-xl mx-auto gap-10">
+    <div>
+      <span class="font-headline text-xl font-bold text-primary block mb-3">REVORA</span>
+      <p class="text-on-surface-variant text-sm opacity-80">The luxury fabric sourcing ecosystem for modern designers.</p>
+    </div>
+    <div><h4 class="text-xs font-bold uppercase tracking-widest text-on-surface mb-4">Source</h4>
+      <nav aria-label="Source links"><div class="flex flex-col gap-2"><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">All Fabrics</a><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">New Arrivals</a><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Sustainable</a></div></nav>
+    </div>
+    <div><h4 class="text-xs font-bold uppercase tracking-widest text-on-surface mb-4">Suppliers</h4>
+      <nav aria-label="Supplier links"><div class="flex flex-col gap-2"><a href="../revora_supplier_portal/index.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Supplier Portal</a><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">List Fabric</a><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Pricing</a></div></nav>
+    </div>
+    <div><h4 class="text-xs font-bold uppercase tracking-widest text-on-surface mb-4">Legal</h4>
+      <nav aria-label="Legal links"><div class="flex flex-col gap-2"><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Terms</a><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Privacy</a><a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Sustainability</a></div></nav>
+    </div>
+  </div>
+  <div class="px-16 max-w-screen-xl mx-auto mt-8 pt-6 border-t border-outline-variant/20">
+    <p class="text-on-surface-variant text-xs opacity-60">© 2026 REVORA Luxury Tech. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+function setFilter(btn, category) {
+  document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+  btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta name="description" content="REVORA — The future of boutique luxury fashion. AI-curated selections, exclusive designers, and premium fabric marketplace.">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<title>REVORA | Luxury Fashion Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e8e0ee",
+                        "on-secondary-container": "#fefcff",
+                        "surface": "#fef7ff",
+                        "primary-fixed": "#ebddff",
+                        "on-tertiary-fixed": "#321300",
+                        "on-secondary-fixed": "#00174b",
+                        "on-primary-fixed": "#250059",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffdbc8",
+                        "inverse-on-surface": "#f6eefc",
+                        "surface-bright": "#fef7ff",
+                        "on-tertiary-container": "#ffc19e",
+                        "surface-container-high": "#ede5f3",
+                        "primary-fixed-dim": "#d3bbff",
+                        "inverse-primary": "#d3bbff",
+                        "surface-container-highest": "#e8e0ee",
+                        "on-surface": "#1d1a24",
+                        "primary-container": "#6d28d9",
+                        "outline-variant": "#ccc3d7",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#4a4455",
+                        "tertiary": "#6b3000",
+                        "tertiary-container": "#8f4200",
+                        "background": "#fef7ff",
+                        "secondary": "#0051d5",
+                        "inverse-surface": "#332f39",
+                        "surface-container": "#f3ebf9",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-tint": "#7331df",
+                        "tertiary-fixed-dim": "#ffb68b",
+                        "on-background": "#1d1a24",
+                        "primary": "#5300b7",
+                        "secondary-container": "#316bf3",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#dac5ff",
+                        "surface-dim": "#dfd7e5",
+                        "on-tertiary-fixed-variant": "#743400",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#5b00c5",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "outline": "#7b7486",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f9f1ff",
+                        "on-secondary-fixed-variant": "#003ea8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "margin-mobile": "20px",
+                        "stack-md": "32px",
+                        "base": "8px",
+                        "margin-desktop": "64px",
+                        "stack-sm": "12px",
+                        "gutter": "24px",
+                        "stack-lg": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Sora"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Sora"],
+                        "display-lg-mobile": ["Sora"],
+                        "headline-sm": ["Sora"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-sm">
+<nav class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto transition-all duration-300 ease-out" aria-label="Main navigation">
+<div class="flex items-center gap-stack-md">
+<a href="#" class="font-headline-md text-headline-md font-bold tracking-tighter text-primary dark:text-primary-fixed" aria-label="REVORA Home">REVORA</a>
+<div class="hidden md:flex gap-gutter">
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary pb-1 font-body-md text-body-md hover:text-primary transition-transform duration-200 hover:scale-105" href="revora_fabric_marketplace/index.html" aria-current="page">Marketplace</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-primary transition-transform duration-200 hover:scale-105" href="#">Designers</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-primary transition-transform duration-200 hover:scale-105" href="#">Editorial</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-primary transition-transform duration-200 hover:scale-105" href="../revora_browse_collections/code.html">Collections</a>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-all" aria-label="Shopping bag">
+<span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-all" aria-label="Wishlist">
+<span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+</button>
+<a href="../revora_auth/index.html" class="px-6 py-2 rounded-full border border-outline hover:bg-surface-variant transition-all font-label-md text-label-md">Account</a>
+</div>
+</nav>
+</header>
+<main class="pt-[88px]">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center px-margin-desktop overflow-hidden">
+<div class="max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center">
+<div class="z-10">
+<span class="inline-block px-4 py-1 rounded-full bg-primary-container/10 text-primary font-label-md text-label-md mb-stack-sm">
+                        AUTUMN/WINTER 2024
+                    </span>
+<h1 class="font-display-lg text-display-lg mb-stack-md text-on-background">
+                        The Future of <br>
+<span class="text-primary">Boutique Luxury</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-stack-lg max-w-lg">
+                        Experience an immersive digital atelier where high-fashion editorial meets cutting-edge fabric technology. Curated by global masters.
+                    </p>
+<div class="flex gap-gutter">
+<button class="px-8 py-4 rounded-full bg-primary text-on-primary font-label-md text-label-md hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20">
+                            Shop Collections
+                        </button>
+<button class="px-8 py-4 rounded-full border border-primary text-primary font-label-md text-label-md hover:bg-primary/5 transition-all">
+                            View Lookbook
+                        </button>
+</div>
+</div>
+<div class="relative h-[600px] flex items-center justify-center">
+<!-- Glassmorphic Card Container -->
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-container/5 to-transparent rounded-xl"></div>
+<img alt="Featured Product" class="relative z-10 w-4/5 h-4/5 object-cover rounded-lg shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-700" data-alt="A high-fashion luxury handbag displayed in a minimalist, studio setting. The product features intricate stitching and metallic hardware, reflecting soft, diffused lighting. The background is a clean, neutral gray with subtle purple shadows, maintaining a premium editorial aesthetic. The composition is balanced and elegant, emphasizing the texture and craftsmanship of the luxury item." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkoIezXTKgt4AUXxdFc1C9xGYvvgtt2ZqqAdM-yt_MUuxlMJvrPXr_uQWwC1ZRNPG66Zp1fSDGgYDpipwZKxYREKJpdNmy7rnMKlCYET2Nk0Zcj8AzfjnNHbb0O0SLjC9q9lEq2QpdlfXdbKe8bh4ouehz71FrFURjv6is1zP3Ofpe0bPEvMndtEgfg2YCT0pA_XGescmZ9oF67q0mQs5sNdvqW58kRBz-z4ENOlR1Kc0QFtYCnHFHS0YtVWE8ZYDg6IAhBnLaFfw">
+<!-- Floating UI Element -->
+<div class="absolute bottom-10 left-0 z-20 p-6 bg-surface/80 backdrop-blur-xl rounded-lg shadow-xl border border-white/20 max-w-xs transform -translate-x-12">
+<p class="font-label-md text-label-md text-primary mb-1">DESIGNER OF THE MONTH</p>
+<h3 class="font-headline-sm text-headline-sm mb-2">Elena Vora</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Signature Silk Blends starting from $840</p>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Recommendations / Bento Grid -->
+<section class="py-stack-lg px-margin-desktop bg-surface-container-low">
+<div class="max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<h2 class="font-headline-md text-headline-md mb-2">Tailored For You</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">AI-curated selections based on your aesthetic profile.</p>
+</div>
+<button class="flex items-center gap-2 text-primary font-label-md text-label-md group">
+                        Refine Profile <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter h-[600px]" id="home-featured-grid"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const res = await fetch('/api/products');
+    const { data } = await res.json();
+    const grid = document.getElementById('home-featured-grid');
+    
+    if (!data || data.length === 0) {
+      grid.innerHTML = '<p class="col-span-full text-center text-on-surface-variant py-10">No products available in DB.</p>';
+      return;
+    }
+
+    grid.innerHTML = data.slice(0, 3).map(product => `
+      <div class="group relative flex flex-col bg-surface-container-lowest rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl border border-transparent hover:border-outline-variant/20">
+        <div class="aspect-[4/5] bg-surface-dim relative">
+          <img class="w-full h-full object-cover" src="${product.image_url}" alt="${product.name}"/>
+        </div>
+        <div class="p-6">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface">${product.name}</h3>
+          <span class="font-headline-sm text-headline-sm text-on-surface">$${product.price}</span>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    console.error(e);
+  }
+});
+</script>
+</div>
+</section>
+<!-- Fabric Marketplace -->
+<section class="py-stack-lg px-margin-desktop">
+<div class="max-w-container-max mx-auto">
+<div class="text-center mb-stack-lg">
+<h2 class="font-headline-md text-headline-md mb-4">Fabric Marketplace</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Source the world's most exclusive textiles directly from Italian and Japanese mills.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Fabric Card 1 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-6 hover:shadow-xl transition-all group">
+<div class="aspect-square rounded-lg overflow-hidden mb-6 bg-surface-dim">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A detailed macro shot of raw white silk fabric with a subtle sheen. The lighting is soft and ambient, revealing the delicate weave and natural imperfections of the luxury textile. The background is a soft, out-of-focus studio setting, keeping the focus entirely on the material's premium quality and texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqlbxk9FcDhD47urGAVPDmkYZMFAS-PkowJT0uWCKkNwJEGe3cL-yWF_afnw-4K2b3LoYKWrMTox5KOG6BnnD31L3XG_--1KEOYZrjsZ1Xw9W6okHAsiQsXkl99lifkfqY6UY0fadpsaD2OvBudYWYSizlW6Qks0ev_6tomvpfApA5JiVd-oGhG9sfyd1er5FQo8a_NgoMRbUZ4j0zCISoEifyYX7XQxEctKMuS5HGpDT6GWjP3d8m4-LYgG4s_5LrK6KKSCW7DcM">
+</div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm">Nagoya Mulberry Silk</h3>
+<p class="text-on-surface-variant font-body-md">100% Organic, 22 Momme</p>
+</div>
+<span class="font-label-md text-label-md text-primary">$120/yd</span>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant flex gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-[10px]">JAPAN</span>
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-[10px]">SUSTAINABLE</span>
+</div>
+</div>
+<!-- Fabric Card 2 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-6 hover:shadow-xl transition-all group">
+<div class="aspect-square rounded-lg overflow-hidden mb-6 bg-surface-dim">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A vibrant, close-up texture shot of high-end Italian wool in a deep navy blue. The lighting highlights the crimp and loft of the wool fibers, suggesting exceptional warmth and luxury. The image is clean and professionally lit, emphasizing the professional-grade quality suitable for high-end tailoring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeAO3zjw_DC6oinLNSmNs9KfChQ-IWJSkrkGRaMaZrWT-hgWPWvqQ0ZKxfLWGjdG3B_IkYq-bDImoGIqxKr-gPWelaSQvzejylNKOwqWnQkvn2mkDi-deCVCCFZZVxbftxxUSVi9GR3bhodzRCGIldHwx_MJWmZ8t1cuZ96DCCNKw2-Dv0msuLE5bG8WPVJf6C5GCnEovsjJhm1XMA5TxeHhM_gc4zO2WZ8B9ti1tzoammcTvMQIas7wyYGhE7B8S-LzFIKjrqYgc">
+</div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm">Biella Virgin Wool</h3>
+<p class="text-on-surface-variant font-body-md">Super 150s, Midnight Blue</p>
+</div>
+<span class="font-label-md text-label-md text-primary">$95/yd</span>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant flex gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-[10px]">ITALY</span>
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-[10px]">TRADITIONAL</span>
+</div>
+</div>
+<!-- Fabric Card 3 -->
+<div class="bg-surface border border-outline-variant rounded-lg p-6 hover:shadow-xl transition-all group">
+<div class="aspect-square rounded-lg overflow-hidden mb-6 bg-surface-dim">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A macro photograph of technical recycled polyester fabric featuring a sophisticated micro-grid pattern. The lighting is cool and sharp, emphasizing the futuristic and innovative nature of the material. The color palette consists of slate grays and muted blues, fitting the modern luxury technology brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB13zuDTkC115ltiMbDTnRgmec9LW74A7Z423-s7gTogmTQr1iN1TDavvMY1zHPWlEsyopqkkH7yVZ3GYJLwp1eH5W40jfBEC-Zd--zRe7LRdIPE5DhCHGVFqJczHiycff1X61prAnwmf0ivQvIPkGGuly4ThNuGiXnVPHnWWOdVHfbGPL2rmW4-uK841S34ydX813jQso_n2BIwVkk3Yz5brgJzU7kdvHFsviMI32nMYzcfMQVRvBi2wRXyv3rZ-Nfihlvpo7BdcQ">
+</div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm">Aero-Tech Recycled</h3>
+<p class="text-on-surface-variant font-body-md">Moisture Wicking, Matte Finish</p>
+</div>
+<span class="font-label-md text-label-md text-primary">$45/yd</span>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant flex gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-[10px]">GERMANY</span>
+<span class="px-3 py-1 rounded-full bg-surface-variant text-on-surface-variant font-label-md text-[10px]">INNOVATION</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Large Fashion Banner -->
+<section class="py-stack-lg">
+<div class="relative w-full h-[500px] overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A wide-angle fashion landscape shot featuring a group of models wearing cohesive, high-fashion luxury tech apparel. They are positioned in a dramatic, minimalist desert environment at sunset. The lighting is warm and golden, casting long shadows and creating a cinematic feel. The overall aesthetic is expansive and prestigious, reflecting REVORA's brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk_G_GVp4sdT77KbGq4cRYNxHJ4X3b0fla7bXRfah9_Ld2gQcx7nTLze-MnjCRL4OxKBHl-vckNADfPb1wx89mK44LnsUGC--GoKXe9DP0CaxXfMWfLZDvBKxOP_q0IFsIMgTL0IjAiVuSx1lzOaLU277tc3IQ2UrHm77SRrzAihiCjatAjXscDhmlKqjbZf4ZdPmRvYBosPyzS7QsEZijeQOJMsocGPT_x8dBAeFmBwcE14TD2Sp4eK6fAjpeYKRc4NY_E6Oqij0">
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center text-center">
+<div class="max-w-3xl px-margin-mobile">
+<h2 class="font-display-lg text-white mb-stack-md">Designing Tomorrow's Legacy</h2>
+<button class="px-10 py-5 rounded-full bg-white text-primary font-label-md text-label-md hover:scale-105 transition-transform">
+                            Explore Editorial
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Designers -->
+<section class="py-stack-lg px-margin-desktop">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-stack-lg gap-base">
+<h2 class="font-headline-md text-headline-md">Global Artisans</h2>
+<div class="flex gap-4">
+<button class="w-12 h-12 rounded-full border border-outline flex items-center justify-center hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-outline flex items-center justify-center hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Designer Card -->
+<div class="flex flex-col items-center text-center">
+<div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-surface-container-high p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional portrait of a modern fashion designer in a brightly lit studio. The individual has a confident and creative expression, wearing minimalist, well-tailored clothing. The background shows hints of fabric swatches and sketches, suggesting a highly productive and high-end creative workspace. The lighting is soft and flattering, emphasizing a premium professional look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaLf6GsexygGVO_0SfGpTsQxk9TgrjTP97hd7ay69GCrROTQjjpLSaZzutNFWApH9f9re1Ko9CKtA5jeoC1qBRikOmXtlbKRJ2EHylS6H2HMgFUsfKZSinJQiblfuNWvNczPngiGqdVc4cG58eTr0EJ3RoBaC1fWuXtVSrD8U0ZitaoEs4t4qxL-LFKRsTCA4UidaMnj7RffMvHV7VU8wdIacCOb4yL3gRGJMwqD8ZRrxgwurS7cPNeboZK8vYEojCIFpgk7S_1OU">
+</div>
+<h4 class="font-headline-sm text-headline-sm">Isabella Chen</h4>
+<p class="text-on-surface-variant font-body-md mb-4">Paris, FR</p>
+<p class="font-label-md text-label-md text-primary tracking-widest uppercase">AVANT GARDE</p>
+</div>
+<!-- Repeat Designer Cards -->
+<div class="flex flex-col items-center text-center">
+<div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-surface-container-high p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="A sharp, professional headshot of a male luxury fashion designer. He is set against a clean, neutral background with subtle studio lighting that highlights his features and high-quality clothing. The overall look is polished and reflects a high level of expertise and sophistication within the luxury fashion industry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfJQNJTrfq7O7CVPpbIu3B-mTt48Pwdr_TXjQHfWBYMVyVlFdqMVWfX7HY1a0BE7v6Ct2B8iX8lYV8RjZECZ_sttCT9fDEz2F8OfigEuD8LmaD7qtNyaWXfkZXdIQi2iTImvOShkQ2QYNwYHfFMkDdiv5L-ukeidTGCH4R0QDJvHES73rpY7Xtz5-UO7YmmsMDxG1JfV7BJIi2VPqvXnewKGwJkSsT8a3yv5cuvD_3N-KzIdF35FxBssxaJPBihc9NiYrK807oC-4">
+</div>
+<h4 class="font-headline-sm text-headline-sm">Marcus Thorne</h4>
+<p class="text-on-surface-variant font-body-md mb-4">London, UK</p>
+<p class="font-label-md text-label-md text-primary tracking-widest uppercase">BESPOKE TAILORING</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-surface-container-high p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="A stylish portrait of a female designer known for sustainable fashion. She is in an airy, sun-drenched studio filled with plants and natural light. Her attire is modern and made from organic materials, aligning with her creative focus. The image conveys warmth, creativity, and a commitment to modern luxury and sustainability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC36JJ1h9HDfuLKzuLkrKV24lKKptnzdxFRq073dhOwO4B7FsKKBIvgOg5l5E2Z8z9V32cOV56Db_akzdkFIOuM44tLJaYGoUi8lbMWqjtktrKPFX5kWx7KUTI5uWXnN_nnhGa1OYl0fIKj6wxV0y2y8xxxnmPYWHoDMR_77G_soSGDXC89EC4DXt76bq6-dI5mz-1i0G7WpDx5C9h3HCmMvTGhX4BHL1Xr6DUsUFo7p6DREf4bk4i9oGGLY3MxNbRJRj446Uq0aY0">
+</div>
+<h4 class="font-headline-sm text-headline-sm">Sanae Tanaka</h4>
+<p class="text-on-surface-variant font-body-md mb-4">Tokyo, JP</p>
+<p class="font-label-md text-label-md text-primary tracking-widest uppercase">SUSTAINABLE LUXE</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-48 h-48 rounded-full overflow-hidden mb-6 border-4 border-surface-container-high p-1">
+<img class="w-full h-full object-cover rounded-full" data-alt="A portrait of a male fashion visionary with an edgy, modern aesthetic. The setting is a minimalist, urban-industrial studio with cool-toned lighting and sharp shadows. The designer wears innovative streetwear that reflects his bold approach to luxury fashion. The image is striking and fits the futuristic tech-luxury theme of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3spL1U_O2GMfOHbvH7U_5JUYOpUmL6L_VLtMSao6XZa1sxraOkIggv2fLeQnp9iJusSERfrnQC6GBzqQc5EctZqNGsRJOBzbA-_EXYXN4ofLguWRcLkQHaVbX7mfD3lhrqRlDga684M4vpc_pXTe1NW1nYS_qsOtmDqVc_mlEbxg4ehknoc5k7-3vul3C0DHA90sbi-El5f0AHJ2Z8AnjN4yTz-D_QBr0dVNbVEsNM01Gg0lfjdKXDU6G817V-rUcNB5fTQhFHOs">
+</div>
+<h4 class="font-headline-sm text-headline-sm">Luca Rossi</h4>
+<p class="text-on-surface-variant font-body-md mb-4">Milan, IT</p>
+<p class="font-label-md text-label-md text-primary tracking-widest uppercase">STREET COUTURE</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg bg-surface-container-highest dark:bg-inverse-surface border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-4 px-margin-desktop max-w-container-max mx-auto gap-stack-lg">
+<div class="col-span-1 md:col-span-1">
+<span class="font-headline-sm text-headline-sm font-bold text-primary block mb-4">REVORA</span>
+<p class="text-on-surface-variant opacity-80 font-body-md text-body-md">
+                    Elevating the digital fashion experience through precision technology and artisanal heritage.
+                </p>
+</div>
+<div>
+<h5 class="font-label-md text-label-md text-on-surface mb-6">Collections</h5>
+<ul class="flex flex-col gap-4">
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">New Arrivals</a></li>
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Exclusives</a></li>
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Runway</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-md text-label-md text-on-surface mb-6">Company</h5>
+<ul class="flex flex-col gap-4">
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Sustainability</a></li>
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Terms</a></li>
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Careers</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-md text-label-md text-on-surface mb-6">Connect</h5>
+<ul class="flex flex-col gap-4">
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Contact</a></li>
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Instagram</a></li>
+<li><a class="text-on-surface-variant opacity-80 hover:opacity-100 hover:text-primary transition-opacity duration-200 font-body-md text-body-md" href="#">Newsletter</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-stack-lg pt-base border-t border-outline-variant/20 flex justify-between items-center">
+<p class="text-on-surface-variant opacity-80 font-label-md text-label-md">© 2024 REVORA Luxury Tech. All rights reserved.</p>
+<div class="flex gap-gutter">
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">payment</span>
+<span class="material-symbols-outlined text-on-surface-variant opacity-50">security</span>
+</div>
+</div>
+</footer>
+</body></html>

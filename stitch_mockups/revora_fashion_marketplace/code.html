@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Revora - Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Sora:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#8f4200",
+                      "outline": "#7b7486",
+                      "primary-container": "#6d28d9",
+                      "primary-fixed-dim": "#d3bbff",
+                      "on-primary-container": "#dac5ff",
+                      "on-secondary-fixed": "#00174b",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed": "#321300",
+                      "surface-bright": "#fef7ff",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-container": "#ffc19e",
+                      "inverse-primary": "#d3bbff",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#ebddff",
+                      "on-background": "#1d1a24",
+                      "surface-variant": "#e8e0ee",
+                      "background": "#fef7ff",
+                      "surface-dim": "#dfd7e5",
+                      "surface-container-low": "#f9f1ff",
+                      "secondary-fixed": "#dbe1ff",
+                      "surface": "#fef7ff",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#ccc3d7",
+                      "surface-container-highest": "#e8e0ee",
+                      "primary": "#5300b7",
+                      "on-primary-fixed": "#250059",
+                      "on-secondary-container": "#fefcff",
+                      "surface-container-high": "#ede5f3",
+                      "on-surface": "#1d1a24",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#743400",
+                      "secondary": "#0051d5",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#316bf3",
+                      "on-primary-fixed-variant": "#5b00c5",
+                      "on-secondary-fixed-variant": "#003ea8",
+                      "inverse-surface": "#332f39",
+                      "tertiary-fixed-dim": "#ffb68b",
+                      "tertiary-fixed": "#ffdbc8",
+                      "inverse-on-surface": "#f6eefc",
+                      "on-secondary": "#ffffff",
+                      "on-surface-variant": "#4a4455",
+                      "tertiary": "#6b3000",
+                      "surface-tint": "#7331df",
+                      "surface-container": "#f3ebf9",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "stack-lg": "80px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "margin-mobile": "20px",
+                      "stack-md": "32px",
+                      "stack-sm": "12px",
+                      "margin-desktop": "64px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Sora"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-sm": [
+                              "Sora"
+                      ],
+                      "headline-md": [
+                              "Sora"
+                      ],
+                      "display-lg-mobile": [
+                              "Sora"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface-dim text-on-surface antialiased min-h-screen flex flex-col pt-32">
+<!-- TopNavBar -->
+<nav class="bg-surface/80 backdrop-blur-xl fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-container-max rounded-full border border-white/20 shadow-lg shadow-primary/5 flex items-center justify-between px-8 py-4 z-50">
+<div class="font-display-lg text-headline-md font-bold tracking-tighter text-primary">REVORA</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-display-lg text-label-md uppercase tracking-widest text-primary border-b-2 border-primary pb-1 scale-105 transition-transform" href="#">Shop</a>
+<a class="font-display-lg text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95 transition-transform" href="#">Designers</a>
+<a class="font-display-lg text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95 transition-transform" href="#">Textiles</a>
+<a class="font-display-lg text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95 transition-transform" href="#">Editorial</a>
+<a class="font-display-lg text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-all duration-300 hover:scale-105 active:scale-95 transition-transform" href="#">Bespoke</a>
+</div>
+<div class="flex items-center gap-base text-primary">
+<button aria-label="search" class="p-2 rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button aria-label="favorite" class="p-2 rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<button aria-label="shopping_bag" class="p-2 rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+<button aria-label="person" class="p-2 rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex gap-gutter pb-stack-lg">
+<!-- Sidebar Filter -->
+<aside class="hidden lg:block w-72 flex-shrink-0">
+<div class="sticky top-40 bg-surface-container-lowest rounded-lg border border-outline-variant/30 p-gutter shadow-sm">
+<div class="flex items-center justify-between mb-stack-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Filters</h2>
+<button class="font-label-md text-label-md text-primary hover:underline">Clear All</button>
+</div>
+<!-- Category -->
+<div class="mb-stack-md border-b border-outline-variant/20 pb-stack-sm">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-base">Category</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4 bg-surface-dim group-hover:border-primary transition-colors" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Outerwear</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4 bg-surface-dim group-hover:border-primary transition-colors" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Dresses</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4 bg-surface-dim group-hover:border-primary transition-colors" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Knitwear</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4 bg-surface-dim group-hover:border-primary transition-colors" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Accessories</span>
+</label>
+</div>
+</div>
+<!-- Designer -->
+<div class="mb-stack-md border-b border-outline-variant/20 pb-stack-sm">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-base">Designer</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4 bg-surface-dim group-hover:border-primary transition-colors" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Atelier Maison</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4 bg-surface-dim group-hover:border-primary transition-colors" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Nova Studios</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-outline-variant text-primary focus:ring-primary w-4 h-4 bg-surface-dim group-hover:border-primary transition-colors" type="checkbox"/>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Lumina</span>
+</label>
+</div>
+</div>
+<!-- Price Range -->
+<div class="mb-stack-md">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-base">Price Range</h3>
+<div class="flex items-center gap-2">
+<input class="w-full bg-surface-dim border-none rounded-lg font-body-md text-body-md focus:ring-1 focus:ring-secondary focus:bg-surface-container-lowest transition-all p-2" placeholder="$Min" type="text"/>
+<span class="text-outline-variant">-</span>
+<input class="w-full bg-surface-dim border-none rounded-lg font-body-md text-body-md focus:ring-1 focus:ring-secondary focus:bg-surface-container-lowest transition-all p-2" placeholder="$Max" type="text"/>
+</div>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<section class="flex-grow">
+<div class="flex items-center justify-between mb-gutter">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Curated Collection</h1>
+<div class="flex items-center gap-2">
+<span class="font-body-md text-body-md text-on-surface-variant">Sort by:</span>
+<select class="bg-transparent border-none font-label-md text-label-md text-primary cursor-pointer focus:ring-0">
+<option>Newest Arrivals</option>
+<option>Price: High to Low</option>
+<option>Price: Low to High</option>
+</select>
+</div>
+</div>
+<!-- Bento-style Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+<!-- Product Card 1 -->
+<div class="group bg-surface-container-lowest rounded-DEFAULT overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(83,0,183,0.1)] transition-all duration-300 border border-outline-variant/20 flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden bg-surface-dim p-4">
+<img alt="Draped Silk Dress" class="w-full h-full object-cover rounded-DEFAULT group-hover:scale-105 transition-transform duration-700" data-alt="A high-fashion editorial shot of an elegant, minimalist draped dress in soft cream silk. The model is standing in a brightly lit, modern studio with stark white walls and a subtle shadow play. The lighting is high-key and soft, emphasizing the luxurious texture and fluid movement of the fabric. The overall aesthetic is clean, sophisticated, and deeply aligned with modern luxury branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKz4cZV7YuWJyCsOaKFZiQSjionlZtRhM0srptF53tuRKJwOQ913us1h9GLoBk8b2vrRSJXuD3ZvUkVq3BFI0rARuHlfCKhpuHEq7GNhB8mA89w5GaJKHnfuB_JJw7ixx7HLBBLgQCPwXwImRXZB0UqyWvnaL6F1pAuq3i6_36siTvtyyaUUvwgKm5RUZz9YjwhrS5g2lXPQPg01CM3tnEU7FGC7RaA77S3K7cl2WCTLMtVjBy1s2c8FSR1T023CD9oL3Ie_rR6BY"/>
+<button class="absolute top-6 right-6 p-2 bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface hover:text-error hover:bg-surface-container-lowest transition-all">
+<span class="material-symbols-outlined" data-icon="favorite_border">favorite_border</span>
+</button>
+<div class="absolute bottom-6 left-6 flex gap-2">
+<span class="px-3 py-1 bg-primary-container/10 text-primary backdrop-blur-md rounded-full font-label-md text-[10px] uppercase tracking-wider">New Season</span>
+</div>
+</div>
+<div class="p-gutter flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">Nova Studios</p>
+<h3 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1">Ethereal Silk Gown</h3>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary">$1,250</span>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-outline-variant/10">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+<span class="font-label-md text-label-md text-on-surface-variant pt-0.5">4.9 (12)</span>
+</div>
+<button class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity">Quick Add</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 (Featured - spans 2 cols on md) -->
+<div class="group bg-surface-container-lowest rounded-DEFAULT overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(83,0,183,0.1)] transition-all duration-300 border border-outline-variant/20 md:col-span-2 xl:col-span-1 flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden bg-surface-dim p-4">
+<img alt="Structured Wool Coat" class="w-full h-full object-cover rounded-DEFAULT group-hover:scale-105 transition-transform duration-700" data-alt="A sleek, tailored wool coat in deep charcoal gray, displayed on a mannequin in a minimalist, gallery-like setting. The lighting is precise and architectural, casting soft, diffused shadows that highlight the structured shoulders and clean lines of the garment. The background is a calm, neutral surface-dim tone, reflecting a premium, technology-forward luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcTc8y3qaWjggNptbEIubYX1JUnYXDsfbo6QRM6OVEq2KWM5q6O9KlA9RO6gLSxaSZwMh5XCjS2psSMD4_PWcr0bPIJaMjry-8DsJoe47OzAFxMyBFwdomjA1K6mDaX9v01yqMtRc8PrDwyrfCUR1t5rZXfZYw3KtIKNlK9YuFvT8iuZ3l3CwXwwkPduM2cI16Z5lFHy5ngabTHYEgzgLw_kvpgdjK9zsz_it7prp9kJExFcD0TAWkBwCYaGSFiOgwq2fBjvl_i9E"/>
+<button class="absolute top-6 right-6 p-2 bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface hover:text-error hover:bg-surface-container-lowest transition-all">
+<span class="material-symbols-outlined" data-icon="favorite_border">favorite_border</span>
+</button>
+</div>
+<div class="p-gutter flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">Atelier Maison</p>
+<h3 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1">Architectural Overcoat</h3>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary">$2,800</span>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-outline-variant/10">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+<span class="font-label-md text-label-md text-on-surface-variant pt-0.5">5.0 (8)</span>
+</div>
+<button class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity">Quick Add</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group bg-surface-container-lowest rounded-DEFAULT overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(83,0,183,0.1)] transition-all duration-300 border border-outline-variant/20 flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden bg-surface-dim p-4">
+<img alt="Leather Boots" class="w-full h-full object-cover rounded-DEFAULT group-hover:scale-105 transition-transform duration-700" data-alt="A close-up shot of a pair of high-end, minimalist leather boots in stark white. The boots are placed on a reflective glass surface against a pure, bright surface-bright background. The lighting is pristine and shadowless, evoking an Apple-like product showcase environment. The focus is entirely on the flawless texture and modern silhouette of the footwear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh2suOo-0v19_gDJFAzwKarpypZ4yyQBNJyzEejM8YcZ3NnJ2Sa6cEVgJ8v_2o6VeZTevGgjle0R0x69t9fYZkNniJrS7czSDcbBvNZ6FFzzDefDdcXf7YW9VM9crTOWlx8JZuukq0UgYzIHvPfdAgBYntJ0ZoKO0EZEDPvKwc39Og10Pf088OrmWbNLO82L3Tj76xZmXZEKzNKB6yS1vRqePpdNp31EJgO1kUPmxRqQX__Hs9Qhozy2AYqXBpLlLHXdghLoZHt7M"/>
+<button class="absolute top-6 right-6 p-2 bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface hover:text-error hover:bg-surface-container-lowest transition-all">
+<span class="text-error" data-icon="favorite" data-weight="fill">favorite</span>
+</button>
+</div>
+<div class="p-gutter flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">Lumina</p>
+<h3 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1">Monolith Boots</h3>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary">$890</span>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-outline-variant/10">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+<span class="font-label-md text-label-md text-on-surface-variant pt-0.5">4.7 (24)</span>
+</div>
+<button class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity">Quick Add</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group bg-surface-container-lowest rounded-DEFAULT overflow-hidden hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(83,0,183,0.1)] transition-all duration-300 border border-outline-variant/20 flex flex-col">
+<div class="relative aspect-[3/4] overflow-hidden bg-surface-dim p-4">
+<img alt="Leather Handbag" class="w-full h-full object-cover rounded-DEFAULT group-hover:scale-105 transition-transform duration-700" data-alt="A minimalist, geometric leather handbag in a rich deep purple (primary container tone) resting on a clean marble plinth. The lighting is dramatic yet soft, creating a subtle glassmorphic reflection on the marble. The scene is set in a spacious, airy boutique environment that screams modern luxury technology. The bag's hardware gleams subtly in the cool, refined light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZnWetDcuooDVfRSvIBBmRnf_25U5pIZKtaCDmq0YeYkB6IxsHix0SN0nrtIkIACrZ1oF1Lew-b51RVwVLtda8sF8AOA_zmw80fDLKGY5Z-RQd49CqTB-MLR7NrsHLrop1H3y-z7g9r8APmQ549J1JsSJ-HhZpn-iuh7rwQ6UYK2iqVLGq98Qw5Dv5IJ2BVmWaqir-rMOgnyIdzYHsKSRdNzsbq1Lw_qnEN_GGlof-ITwaHg3zWTQE8MdZnFGv1VPoib6lv176wZ4"/>
+<button class="absolute top-6 right-6 p-2 bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-on-surface hover:text-error hover:bg-surface-container-lowest transition-all">
+<span class="material-symbols-outlined" data-icon="favorite_border">favorite_border</span>
+</button>
+<div class="absolute bottom-6 left-6 flex gap-2">
+<span class="px-3 py-1 bg-surface-container-highest/80 text-on-surface backdrop-blur-md rounded-full font-label-md text-[10px] uppercase tracking-wider">Low Stock</span>
+</div>
+</div>
+<div class="p-gutter flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-1">Nova Studios</p>
+<h3 class="font-headline-sm text-headline-sm text-on-surface line-clamp-1">Prism Top Handle</h3>
+</div>
+<span class="font-headline-sm text-headline-sm text-primary">$1,400</span>
+</div>
+<div class="mt-auto pt-4 flex items-center justify-between border-t border-outline-variant/10">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" data-weight="fill">star</span>
+<span class="font-label-md text-label-md text-on-surface-variant pt-0.5">4.8 (19)</span>
+</div>
+<button class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity">Quick Add</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More -->
+<div class="mt-stack-lg flex justify-center">
+<button class="px-8 py-4 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-[0_8px_16px_-4px_rgba(83,0,183,0.3)]">
+                    Load More Selections
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-dim w-full py-stack-lg border-t border-outline-variant/20 mt-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="md:col-span-1 flex flex-col justify-between">
+<div class="font-display-lg text-display-lg text-primary mb-4">REVORA</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-auto uppercase tracking-wider text-sm">© 2024 REVORA. THE ART OF SUSTAINABLE LUXURY.</p>
+</div>
+<div class="md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-gutter pt-2">
+<div class="flex flex-col gap-4">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Ethics</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Transparency</a>
+</div>
+<div class="flex flex-col gap-4">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Global Shipping</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Sustainability Report</a>
+</div>
+<div class="flex flex-col gap-4 col-span-2 md:col-span-1">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Press</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

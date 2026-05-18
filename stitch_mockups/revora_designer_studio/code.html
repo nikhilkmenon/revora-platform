@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Designer Workspace - Revora</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Sora:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#8f4200",
+                      "outline": "#7b7486",
+                      "primary-container": "#6d28d9",
+                      "primary-fixed-dim": "#d3bbff",
+                      "on-primary-container": "#dac5ff",
+                      "on-secondary-fixed": "#00174b",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed": "#321300",
+                      "surface-bright": "#fef7ff",
+                      "secondary-fixed-dim": "#b4c5ff",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-container": "#ffc19e",
+                      "inverse-primary": "#d3bbff",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#ebddff",
+                      "on-background": "#1d1a24",
+                      "surface-variant": "#e8e0ee",
+                      "background": "#fef7ff",
+                      "surface-dim": "#dfd7e5",
+                      "surface-container-low": "#f9f1ff",
+                      "secondary-fixed": "#dbe1ff",
+                      "surface": "#fef7ff",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#ccc3d7",
+                      "surface-container-highest": "#e8e0ee",
+                      "primary": "#5300b7",
+                      "on-primary-fixed": "#250059",
+                      "on-secondary-container": "#fefcff",
+                      "surface-container-high": "#ede5f3",
+                      "on-surface": "#1d1a24",
+                      "on-tertiary": "#ffffff",
+                      "on-tertiary-fixed-variant": "#743400",
+                      "secondary": "#0051d5",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#316bf3",
+                      "on-primary-fixed-variant": "#5b00c5",
+                      "on-secondary-fixed-variant": "#003ea8",
+                      "inverse-surface": "#332f39",
+                      "tertiary-fixed-dim": "#ffb68b",
+                      "tertiary-fixed": "#ffdbc8",
+                      "inverse-on-surface": "#f6eefc",
+                      "on-secondary": "#ffffff",
+                      "on-surface-variant": "#4a4455",
+                      "tertiary": "#6b3000",
+                      "surface-tint": "#7331df",
+                      "surface-container": "#f3ebf9",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "stack-lg": "80px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "margin-mobile": "20px",
+                      "stack-md": "32px",
+                      "stack-sm": "12px",
+                      "margin-desktop": "64px"
+              },
+              "fontFamily": {
+                      "display-lg": [
+                              "Sora"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-sm": [
+                              "Sora"
+                      ],
+                      "headline-md": [
+                              "Sora"
+                      ],
+                      "display-lg-mobile": [
+                              "Sora"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-sm": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "36px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface-dim text-on-surface antialiased flex">
+<!-- SideNavBar (Shared Component) -->
+<aside class="bg-surface-container-low dark:bg-surface-container-lowest text-primary dark:text-primary-fixed-dim font-body-md text-body-md h-screen w-72 fixed left-0 top-0 border-r border-outline-variant/30 dark:border-outline/10 flex flex-col gap-base p-gutter z-50">
+<!-- Header -->
+<div class="mb-stack-md flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant flex-shrink-0">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a sophisticated woman with minimal makeup, looking directly at the camera. The lighting is soft and natural, emphasizing a clean, modern aesthetic. The background is a soft, out-of-focus studio setting, contributing to a professional, high-end editorial feel appropriate for a luxury design dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQZLS9xodlLm2WrgK1Si2FayNpyFEkmsBIhriB3KvqYUw4nTuujenSt6yJr8ixfi7QEnwLsg02bGuvFrum0dsW8Vbf2zVEXP4etBjVvV4ws1sWIGq2KdLYGCEfU3z4_djvzk3smTdnTqtLdKh1Nb7mQKR5dEzkii6dyx1oi-wxWy5jcDLLw9shPAN_SIztIhZXyuzkHngddctzO8Y3Cnsx3xkndAakT5uyy9HoVxg37oAgEIHA1iHqxt1gtkdOTKHNi7jJr_lsW68"/>
+</div>
+<div>
+<h2 class="font-display-lg text-headline-sm font-bold text-primary dark:text-primary-fixed-dim tracking-tight">REVORA STUDIO</h2>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Design Console</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-grow flex flex-col gap-2">
+<!-- Active Tab -->
+<a class="bg-primary-container/20 text-primary dark:bg-primary-fixed-dim/10 dark:text-primary-fixed-dim rounded-lg font-semibold flex items-center gap-3 p-3 transition-transform duration-200 hover:translate-x-1 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                Overview
+            </a>
+<!-- Inactive Tabs -->
+<a class="text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-transform duration-200 hover:translate-x-1 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">auto_awesome_motion</span>
+                Collections
+            </a>
+<a class="text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-transform duration-200 hover:translate-x-1 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">storefront</span>
+                Marketplace
+            </a>
+<a class="text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-transform duration-200 hover:translate-x-1 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">insights</span>
+                Analytics
+            </a>
+<a class="text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-transform duration-200 hover:translate-x-1 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">group</span>
+                Customers
+            </a>
+</nav>
+<!-- Bottom Actions -->
+<div class="mt-auto flex flex-col gap-4">
+<a class="text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 flex items-center gap-3 p-3 rounded-lg transition-transform duration-200 hover:translate-x-1 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Account
+            </a>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 px-6 rounded-full hover:scale-[1.02] transition-transform duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Collection
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 flex-grow min-h-screen p-margin-desktop flex flex-col gap-stack-lg w-full max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="flex justify-between items-end">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">Workspace Overview</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage your active sourcing, inventory, and recent collections.</p>
+</div>
+<!-- Quick Actions / Status -->
+<div class="flex gap-4 items-center">
+<div class="flex items-center gap-2 bg-surface-container rounded-full px-4 py-2 border border-outline-variant/20">
+<div class="w-2 h-2 rounded-full bg-[#10b981]"></div>
+<span class="font-label-md text-label-md text-on-surface">Store Active</span>
+</div>
+<button class="w-10 h-10 rounded-full border border-outline-variant/50 flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Main Analytics Card (Spans 8 cols) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-xl p-gutter border border-outline-variant/20 flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Revenue &amp; Performance</h3>
+<select class="bg-surface-dim border-none rounded-lg font-label-md text-label-md text-on-surface-variant focus:ring-1 focus:ring-primary focus:outline-none py-2 px-3">
+<option>Last 30 Days</option>
+<option>This Quarter</option>
+<option>Year to Date</option>
+</select>
+</div>
+<div class="grid grid-cols-3 gap-4 mb-4">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Total Revenue</p>
+<p class="font-headline-md text-headline-md text-on-surface">$124,500</p>
+<p class="font-body-md text-body-md text-[#10b981] flex items-center mt-1"><span class="material-symbols-outlined text-[16px] mr-1">trending_up</span> +12.5%</p>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Orders</p>
+<p class="font-headline-md text-headline-md text-on-surface">342</p>
+<p class="font-body-md text-body-md text-[#10b981] flex items-center mt-1"><span class="material-symbols-outlined text-[16px] mr-1">trending_up</span> +5.2%</p>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Avg. Order Value</p>
+<p class="font-headline-md text-headline-md text-on-surface">$364</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center mt-1"><span class="material-symbols-outlined text-[16px] mr-1">trending_flat</span> 0.0%</p>
+</div>
+</div>
+<!-- Decorative Chart Area -->
+<div class="h-48 w-full bg-surface-variant/30 rounded-lg relative overflow-hidden flex items-end">
+<!-- Faux bars for aesthetic -->
+<div class="w-full h-full flex items-end justify-between px-4 pb-0 gap-2 opacity-60">
+<div class="w-full bg-primary/20 h-[30%] rounded-t-sm"></div>
+<div class="w-full bg-primary/30 h-[45%] rounded-t-sm"></div>
+<div class="w-full bg-primary/20 h-[35%] rounded-t-sm"></div>
+<div class="w-full bg-primary/50 h-[60%] rounded-t-sm"></div>
+<div class="w-full bg-primary/40 h-[50%] rounded-t-sm"></div>
+<div class="w-full bg-primary/60 h-[75%] rounded-t-sm"></div>
+<div class="w-full bg-primary/80 h-[90%] rounded-t-sm"></div>
+<div class="w-full bg-primary/40 h-[40%] rounded-t-sm"></div>
+<div class="w-full bg-primary/70 h-[80%] rounded-t-sm"></div>
+<div class="w-full bg-primary h-[95%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+<!-- Upload Portal Card (Spans 4 cols) -->
+<div class="col-span-12 lg:col-span-4 bg-primary text-on-primary rounded-xl p-gutter relative overflow-hidden flex flex-col justify-between min-h-[360px]">
+<!-- Background decorative element -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mb-6 backdrop-blur-md">
+<span class="material-symbols-outlined text-on-primary">upload</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-2">Upload New Collection</h3>
+<p class="font-body-md text-body-md opacity-80 mb-6">Launch your next editorial series or product drop directly to the marketplace.</p>
+</div>
+<div class="relative z-10 w-full h-32 border-2 border-dashed border-white/30 rounded-lg flex flex-col items-center justify-center bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-white/70 mb-2">cloud_upload</span>
+<p class="font-label-md text-label-md text-white/90">Drag &amp; Drop Files</p>
+<p class="text-xs text-white/50 mt-1">Images, CADs, Tech Packs</p>
+</div>
+</div>
+<!-- Inventory Tracking (Spans 6 cols) -->
+<div class="col-span-12 lg:col-span-6 bg-surface-container-lowest rounded-xl p-gutter border border-outline-variant/20">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Material Inventory</h3>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Inventory Item 1 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-variant/30 transition-colors">
+<div class="w-16 h-16 rounded-md overflow-hidden bg-surface-variant flex-shrink-0">
+<img alt="Silk fabric" class="w-full h-full object-cover" data-alt="A close-up shot of luxurious, flowing silk fabric in a deep, rich navy blue. The lighting highlights the smooth, reflective texture of the material, creating soft folds and shadows. The composition is tight and abstract, emphasizing the premium quality and soft, tactile nature of the textile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDibed8BDy_Mg_6dRtpdj7pSc_29gb6wt_VnJmSWmjd0Y2jQPDBMZzh5eikCl6mZmFxwfFR4xv5bFx0Glx7zVjoe2iWmiHjnxcruRQ_adzLG3N8o0lCOsRGVzsypE6FkTUzs1ipXRPizpm4MXTNS9DlNLPb8hMg48AC4Zyh62TwPUQtMPbwMjimzidRjZb3SwKw-MdSC1uto0EPt1k5dSkYfAqJqgp0W2cW9vGzvF0j6g6r_s2UAH9hNrj3gmAHaHdCSc5NoOQd0OE"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-md text-label-md text-on-surface">Midnight Silk Charmeuse</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Supplier: Textura Milano</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">145 yds</p>
+<span class="inline-block px-2 py-1 rounded-full bg-[#10b981]/10 text-[#10b981] text-xs font-semibold mt-1">In Stock</span>
+</div>
+</div>
+<!-- Inventory Item 2 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-surface-variant/30 transition-colors">
+<div class="w-16 h-16 rounded-md overflow-hidden bg-surface-variant flex-shrink-0">
+<img alt="Linen fabric" class="w-full h-full object-cover" data-alt="A macro photograph of raw, unbleached linen fabric, showcasing its natural, woven texture. The lighting is bright and even, highlighting the subtle imperfections and organic quality of the threads. The color palette is composed of warm, earthy beige and ecru tones, fitting for a sustainable luxury aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4WJkd8lPH9mp9lwfgkrajz_EIBtd0AVvhZ9WhSjLn3zIPdeE8wsoOU6eTKFIV5bWpi-kA3T01D-l7tU7rd_Jg5odkEFCWRoA09Sr1KsbZrKeSeImPhL0CxfcthVs56lxZj5hPw4z9uKwdc2Q7BogDdyR8KN5NIFoM3Jk7i_MH0AYmLf64zzeusm3y7Xe09cOQE4JENwY1VyPvSb2D3ORhbkhXzJ6cWk-_r7NYMg4UaWDCTawyEjMNJadk3U1h14gaQboCm1pl_vs"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-md text-label-md text-on-surface">Raw Organic Linen</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Supplier: EarthWeave Co.</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">22 yds</p>
+<span class="inline-block px-2 py-1 rounded-full bg-[#f59e0b]/10 text-[#f59e0b] text-xs font-semibold mt-1">Low Stock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Orders (Spans 6 cols) -->
+<div class="col-span-12 lg:col-span-6 bg-surface-container-lowest rounded-xl p-gutter border border-outline-variant/20">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Active Sourcing Orders</h3>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Order 1 -->
+<div class="border border-outline-variant/30 rounded-lg p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-md text-label-md text-on-surface-variant text-xs uppercase tracking-wider block mb-1">PO-2024-089</span>
+<h4 class="font-label-md text-label-md text-on-surface">Japanese Selvedge Denim</h4>
+</div>
+<span class="inline-block px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">In Transit</span>
+</div>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary w-3/4 h-full rounded-full"></div>
+</div>
+<div class="flex justify-between items-center mt-1">
+<p class="font-body-md text-body-md text-on-surface-variant text-xs">Est. Delivery: Oct 24</p>
+<p class="font-label-md text-label-md text-on-surface text-sm">400 yds</p>
+</div>
+</div>
+<!-- Order 2 -->
+<div class="border border-outline-variant/30 rounded-lg p-4 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-md text-label-md text-on-surface-variant text-xs uppercase tracking-wider block mb-1">PO-2024-092</span>
+<h4 class="font-label-md text-label-md text-on-surface">Italian Cashmere Blend</h4>
+</div>
+<span class="inline-block px-2 py-1 rounded-full bg-surface-variant text-on-surface-variant text-xs font-semibold">Processing</span>
+</div>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary w-1/4 h-full rounded-full"></div>
+</div>
+<div class="flex justify-between items-center mt-1">
+<p class="font-body-md text-body-md text-on-surface-variant text-xs">Est. Delivery: Nov 02</p>
+<p class="font-label-md text-label-md text-on-surface text-sm">150 yds</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

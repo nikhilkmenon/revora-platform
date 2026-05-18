@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="REVORA — AI-powered luxury fashion marketplace. Discover exclusive designers, source premium fabrics, and manage your collections."/>
+<meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN"/>
+<title>REVORA | Luxury Fashion Ecosystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{"primary":"#5300b7","on-primary":"#fff","primary-container":"#6d28d9","on-primary-container":"#dac5ff","primary-fixed":"#ebddff","surface":"#fef7ff","surface-variant":"#e8e0ee","on-surface":"#1d1a24","on-surface-variant":"#4a4455","outline":"#7b7486","outline-variant":"#ccc3d7","surface-dim":"#dfd7e5","surface-container":"#f3ebf9","surface-container-low":"#f9f1ff","surface-container-high":"#ede5f3","surface-container-lowest":"#fff","surface-container-highest":"#e8e0ee","secondary":"#0051d5","error":"#ba1a1a"},fontFamily:{headline:["Sora"],body:["Inter"]}}}}
+</script>
+<style>
+*{box-sizing:border-box}
+body{font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;background:#fef7ff;color:#1d1a24;overflow-x:hidden}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle}
+.glass{background:rgba(254,247,255,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(204,195,215,.35)}
+.hero-bg{background:linear-gradient(135deg,#f9f1ff 0%,#ede5f3 40%,#dfd7e5 100%)}
+.portal-card{background:#fff;border:1.5px solid #e8e0ee;border-radius:24px;padding:32px;transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer;text-decoration:none;display:block;color:inherit}
+.portal-card:hover{border-color:#5300b7;box-shadow:0 12px 40px rgba(83,0,183,.1);transform:translateY(-6px)}
+.portal-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.tag{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.05em}
+.animate-float{animation:float 6s ease-in-out infinite}
+.animate-float-delay{animation:float 6s ease-in-out 2s infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.gradient-text{background:linear-gradient(135deg,#5300b7,#0051d5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-num{font-family:'Sora',sans-serif;font-size:36px;font-weight:800;color:#5300b7}
+.section-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#7b7486}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="fixed top-0 w-full z-50 glass border-b border-outline-variant/20">
+  <nav class="flex justify-between items-center px-8 lg:px-16 py-4 max-w-screen-xl mx-auto" aria-label="Main navigation">
+    <a href="#" class="font-headline text-2xl font-bold tracking-tighter text-primary" aria-label="REVORA Home">REVORA</a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="revora_browse_collections/code.html" class="text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">Marketplace</a>
+      <a href="revora_fabric_marketplace/index.html" class="text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">Fabrics</a>
+      <a href="#portals" class="text-on-surface-variant text-sm font-medium hover:text-primary transition-colors">Portals</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="revora_auth/index.html" class="px-5 py-2 border border-outline text-on-surface-variant rounded-full text-sm font-semibold hover:bg-surface-variant transition-all">Sign In</a>
+      <a href="revora_auth/index.html" class="px-5 py-2 bg-primary text-white rounded-full text-sm font-bold hover:opacity-90 transition-opacity">Get Started</a>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<main>
+<section class="hero-bg pt-32 pb-20 px-8 lg:px-16 min-h-screen flex items-center">
+  <div class="max-w-screen-xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/8 border border-primary/20 mb-6">
+        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+        <span class="text-primary text-xs font-bold tracking-widest">PLATFORM NOW LIVE</span>
+      </div>
+      <h1 class="font-headline text-5xl lg:text-6xl font-bold leading-tight mb-6 text-on-surface">
+        The Future of<br/><span class="gradient-text">Boutique Luxury</span><br/>Commerce
+      </h1>
+      <p class="text-on-surface-variant text-lg leading-relaxed mb-8 max-w-lg">AI-powered marketplace connecting designers, buyers, and suppliers. Source premium fabrics, sell exclusive collections, and grow your fashion ecosystem.</p>
+      <div class="flex flex-wrap gap-3 mb-10">
+        <a href="revora_browse_collections/code.html" class="px-7 py-3.5 bg-primary text-white rounded-full font-bold text-sm hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-primary/25" aria-label="Browse collections">Shop Collections</a>
+        <a href="revora_auth/index.html" class="px-7 py-3.5 border-2 border-primary text-primary rounded-full font-semibold text-sm hover:bg-primary/5 transition-all" aria-label="Join REVORA">Join REVORA</a>
+      </div>
+      <!-- Stats row -->
+      <div class="flex gap-8 flex-wrap">
+        <div><p class="stat-num">12K+</p><p class="text-xs text-on-surface-variant font-semibold">Luxury Products</p></div>
+        <div><p class="stat-num">2.8K</p><p class="text-xs text-on-surface-variant font-semibold">Global Designers</p></div>
+        <div><p class="stat-num">480+</p><p class="text-xs text-on-surface-variant font-semibold">Fabric Suppliers</p></div>
+      </div>
+    </div>
+    <!-- Floating cards -->
+    <div class="relative hidden lg:block h-[500px]">
+      <div class="animate-float glass rounded-3xl p-6 absolute top-0 right-0 w-72 shadow-xl">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-primary text-2xl" aria-hidden="true">auto_awesome</span>
+          <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">AI Curation</span>
+        </div>
+        <p class="font-headline text-2xl font-bold text-on-surface mb-1">98% Match</p>
+        <p class="text-sm text-on-surface-variant">Chronos VII Smartlink detected for your profile</p>
+      </div>
+      <div class="animate-float-delay glass rounded-3xl p-6 absolute bottom-16 left-0 w-72 shadow-xl">
+        <div class="flex items-center gap-3 mb-3">
+          <span class="material-symbols-outlined text-secondary text-2xl" aria-hidden="true">payments</span>
+          <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Live Sale</span>
+        </div>
+        <p class="font-headline text-2xl font-bold text-on-surface mb-1">$4,200</p>
+        <p class="text-sm text-on-surface-variant">Revora Chrono V1 · Buyer: @marco_f</p>
+      </div>
+      <div class="glass rounded-3xl p-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 shadow-xl bg-primary text-white">
+        <span class="material-symbols-outlined text-white/70 text-2xl mb-2 block" aria-hidden="true">inventory_2</span>
+        <p class="font-headline text-xl font-bold mb-1">842 Units</p>
+        <p class="text-sm text-white/70">Across 14 collections · 72% high-performing</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTALS GRID -->
+<section id="portals" class="py-20 px-8 lg:px-16 bg-surface-container-lowest">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="text-center mb-14">
+      <p class="section-label mb-3">Ecosystem</p>
+      <h2 class="font-headline text-4xl font-bold text-on-surface mb-3">Choose Your Portal</h2>
+      <p class="text-on-surface-variant max-w-xl mx-auto">Every role in the REVORA ecosystem has a dedicated workspace built for their needs.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Home -->
+      <a href="revora_minimal_luxury_home/code.html" class="portal-card" aria-label="REVORA Home — Fashion Marketplace">
+        <div class="portal-icon bg-primary-fixed">
+          <span class="material-symbols-outlined text-primary text-2xl" aria-hidden="true">home</span>
+        </div>
+        <p class="section-label mb-2">Public</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Home</h3>
+        <p class="text-sm text-on-surface-variant mb-4">Editorial landing, AI recommendations, featured designers and fabric marketplace showcase.</p>
+        <span class="tag bg-primary-fixed text-primary">Buyers · Designers · Public</span>
+      </a>
+
+      <!-- Browse Collections -->
+      <a href="revora_browse_collections/code.html" class="portal-card" aria-label="Browse REVORA Marketplace Collections">
+        <div class="portal-icon bg-blue-50">
+          <span class="material-symbols-outlined text-secondary text-2xl" aria-hidden="true">storefront</span>
+        </div>
+        <p class="section-label mb-2">Commerce</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Marketplace</h3>
+        <p class="text-sm text-on-surface-variant mb-4">Browse 1,248+ luxury products with AI filters, category search, and price ranges.</p>
+        <span class="tag bg-blue-50 text-secondary">Shopping · Discovery</span>
+      </a>
+
+      <!-- Product Detail -->
+      <a href="revora_product_detail/code.html" class="portal-card" aria-label="REVORA Product Detail Page">
+        <div class="portal-icon bg-orange-50">
+          <span class="material-symbols-outlined text-orange-600 text-2xl" aria-hidden="true">shopping_bag</span>
+        </div>
+        <p class="section-label mb-2">Commerce</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Product Detail</h3>
+        <p class="text-sm text-on-surface-variant mb-4">3D views, size selector, NFC certificate, related items, and Razorpay checkout.</p>
+        <span class="tag bg-orange-50 text-orange-700">PDP · Checkout Flow</span>
+      </a>
+
+      <!-- Fabric Marketplace -->
+      <a href="revora_fabric_marketplace/index.html" class="portal-card" aria-label="REVORA Fabric Marketplace">
+        <div class="portal-icon bg-green-50">
+          <span class="material-symbols-outlined text-green-700 text-2xl" aria-hidden="true">texture</span>
+        </div>
+        <p class="section-label mb-2">B2B Sourcing</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Fabric Marketplace</h3>
+        <p class="text-sm text-on-surface-variant mb-4">Source Nagoya silk, Biella wool, recycled tech fabrics from global premium mills. MOQ from 30 yd.</p>
+        <span class="tag bg-green-50 text-green-700">Designers · Suppliers</span>
+      </a>
+
+      <!-- Buyer Dashboard -->
+      <a href="revora_buyer_dashboard/code.html" class="portal-card" aria-label="REVORA Buyer Dashboard">
+        <div class="portal-icon bg-primary-fixed">
+          <span class="material-symbols-outlined text-primary text-2xl" aria-hidden="true">person</span>
+        </div>
+        <p class="section-label mb-2">Buyer</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Buyer Dashboard</h3>
+        <p class="text-sm text-on-surface-variant mb-4">Track orders, AI curation (98% match), asset valuation, wishlist, and shipment tracking.</p>
+        <span class="tag bg-primary-fixed text-primary">BUYER Role</span>
+      </a>
+
+      <!-- Designer Studio -->
+      <a href="revora_designer_studio/code.html" class="portal-card" aria-label="REVORA Designer Studio">
+        <div class="portal-icon bg-purple-50">
+          <span class="material-symbols-outlined text-purple-700 text-2xl" aria-hidden="true">palette</span>
+        </div>
+        <p class="section-label mb-2">Designer</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Designer Studio</h3>
+        <p class="text-sm text-on-surface-variant mb-4">Revenue analytics ($142K), inventory health, recent orders, quick actions and marketing hub.</p>
+        <span class="tag bg-purple-50 text-purple-700">DESIGNER Role</span>
+      </a>
+
+      <!-- Supplier Portal -->
+      <a href="revora_supplier_portal/index.html" class="portal-card" aria-label="REVORA Supplier Portal">
+        <div class="portal-icon bg-amber-50">
+          <span class="material-symbols-outlined text-amber-700 text-2xl" aria-hidden="true">inventory_2</span>
+        </div>
+        <p class="section-label mb-2">Supplier</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Supplier Portal</h3>
+        <p class="text-sm text-on-surface-variant mb-4">List fabrics, manage wholesale orders, track payout schedules, and monitor inventory.</p>
+        <span class="tag bg-amber-50 text-amber-700">SUPPLIER Role</span>
+      </a>
+
+      <!-- Admin Center -->
+      <a href="revora_admin_center/code.html" class="portal-card" aria-label="REVORA Admin Center">
+        <div class="portal-icon bg-red-50">
+          <span class="material-symbols-outlined text-red-700 text-2xl" aria-hidden="true">admin_panel_settings</span>
+        </div>
+        <p class="section-label mb-2">Admin</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Admin Center</h3>
+        <p class="text-sm text-on-surface-variant mb-4">$1.28M revenue KPIs, user management (2,492 users), market performance, live sales feed.</p>
+        <span class="tag bg-red-50 text-red-700">ADMIN · SUPER_ADMIN</span>
+      </a>
+
+      <!-- Auth -->
+      <a href="revora_auth/index.html" class="portal-card border-dashed" aria-label="REVORA Sign In or Create Account">
+        <div class="portal-icon bg-surface-container-high">
+          <span class="material-symbols-outlined text-on-surface-variant text-2xl" aria-hidden="true">lock</span>
+        </div>
+        <p class="section-label mb-2">Authentication</p>
+        <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Sign In / Register</h3>
+        <p class="text-sm text-on-surface-variant mb-4">JWT auth with role-based redirect: Buyer, Designer, Supplier, Admin. OAuth + MFA-ready.</p>
+        <span class="tag bg-surface-variant text-on-surface-variant">Auth Service</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE SUMMARY -->
+<section class="py-20 px-8 lg:px-16 bg-primary">
+  <div class="max-w-screen-xl mx-auto">
+    <div class="text-center mb-12">
+      <p class="text-white/50 text-xs font-bold uppercase tracking-widest mb-3">Architecture</p>
+      <h2 class="font-headline text-4xl font-bold text-white mb-3">Production-Grade Infrastructure</h2>
+      <p class="text-white/60 max-w-xl mx-auto">Built on Google Cloud with Kubernetes-ready deployment, AI layer, and full security stack.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white/10 rounded-2xl p-6 text-center">
+        <span class="material-symbols-outlined text-white text-3xl mb-3 block" aria-hidden="true">cloud</span>
+        <p class="font-headline text-sm font-bold text-white mb-1">Cloud CDN + Armor</p>
+        <p class="text-white/50 text-xs">DDoS · WAF · IP Filtering</p>
+      </div>
+      <div class="bg-white/10 rounded-2xl p-6 text-center">
+        <span class="material-symbols-outlined text-white text-3xl mb-3 block" aria-hidden="true">auto_awesome</span>
+        <p class="font-headline text-sm font-bold text-white mb-1">Vertex AI</p>
+        <p class="text-white/50 text-xs">Recommendations · Fraud Detection</p>
+      </div>
+      <div class="bg-white/10 rounded-2xl p-6 text-center">
+        <span class="material-symbols-outlined text-white text-3xl mb-3 block" aria-hidden="true">payments</span>
+        <p class="font-headline text-sm font-bold text-white mb-1">Razorpay</p>
+        <p class="text-white/50 text-xs">Escrow · Payouts · Webhooks</p>
+      </div>
+      <div class="bg-white/10 rounded-2xl p-6 text-center">
+        <span class="material-symbols-outlined text-white text-3xl mb-3 block" aria-hidden="true">security</span>
+        <p class="font-headline text-sm font-bold text-white mb-1">JWT + MFA</p>
+        <p class="text-white/50 text-xs">RBAC · Secret Manager · Redis</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-surface-container-highest border-t border-outline-variant/20 py-14 px-8 lg:px-16">
+  <div class="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+    <div>
+      <span class="font-headline text-xl font-bold text-primary block mb-3">REVORA</span>
+      <p class="text-on-surface-variant text-sm opacity-80">Luxury fashion ecosystem. Cloud-native, AI-ready, investor-grade.</p>
+    </div>
+    <div>
+      <h4 class="text-xs font-bold uppercase tracking-widest text-on-surface mb-4">Shop</h4>
+      <nav aria-label="Shop links">
+        <div class="flex flex-col gap-2">
+          <a href="revora_browse_collections/code.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Marketplace</a>
+          <a href="revora_fabric_marketplace/index.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Fabric Marketplace</a>
+          <a href="revora_product_detail/code.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Featured Product</a>
+        </div>
+      </nav>
+    </div>
+    <div>
+      <h4 class="text-xs font-bold uppercase tracking-widest text-on-surface mb-4">Portals</h4>
+      <nav aria-label="Portal links">
+        <div class="flex flex-col gap-2">
+          <a href="revora_buyer_dashboard/code.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Buyer Dashboard</a>
+          <a href="revora_designer_studio/code.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Designer Studio</a>
+          <a href="revora_supplier_portal/index.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Supplier Portal</a>
+          <a href="revora_admin_center/code.html" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Admin Center</a>
+        </div>
+      </nav>
+    </div>
+    <div>
+      <h4 class="text-xs font-bold uppercase tracking-widest text-on-surface mb-4">Legal</h4>
+      <nav aria-label="Legal links">
+        <div class="flex flex-col gap-2">
+          <a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Terms of Service</a>
+          <a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Privacy Policy</a>
+          <a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Sustainability</a>
+          <a href="#" class="text-on-surface-variant text-sm hover:text-primary transition-colors">Careers</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="border-t border-outline-variant/20 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+    <p class="text-on-surface-variant text-xs opacity-60">© 2026 REVORA Luxury Tech. All rights reserved.</p>
+    <p class="text-on-surface-variant text-xs opacity-60">System Version 1.0.0 · Production Build</p>
+  </div>
+</footer>
+</main>
+</body>
+</html>
