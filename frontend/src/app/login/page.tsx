@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAuth } from "@/features/auth/AuthContext";
 import { env } from "@/lib/env";
 
-type Role = "BUYER" | "DESIGNER" | "SUPPLIER";
+type Role = "BUYER" | "DESIGNER";
 
 export default function AuthPage() {
   const { login, signup } = useAuth();
@@ -29,7 +29,7 @@ export default function AuthPage() {
     finally { setLoading(false); }
   };
 
-  const ROLES: Role[] = ["BUYER", "DESIGNER", "SUPPLIER"];
+  const ROLES: Role[] = ["BUYER", "DESIGNER"];
 
   return (
     <div className="bg-[#fef7ff] text-[#1d1a24] min-h-screen flex items-center justify-center relative overflow-hidden antialiased py-12">

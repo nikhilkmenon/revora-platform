@@ -79,9 +79,9 @@ export default function ShopPage() {
             <div>
               <h3 className="font-body text-sm font-semibold text-[#1d1a24] mb-3">Price Range</h3>
               <div className="flex items-center gap-2">
-                <input type="number" placeholder="$Min" value={minPrice} onChange={(e) => setMinPrice(e.target.value === "" ? "" : Number(e.target.value))} className="w-full bg-[#dfd7e5] border-none rounded-xl text-sm focus:ring-1 focus:ring-[#0051d5] focus:bg-white transition-all p-2" />
+                <input type="number" placeholder="₹Min" value={minPrice} onChange={(e) => setMinPrice(e.target.value === "" ? "" : Number(e.target.value))} className="w-full bg-[#dfd7e5] border-none rounded-xl text-sm focus:ring-1 focus:ring-[#0051d5] focus:bg-white transition-all p-2" />
                 <span className="text-[#ccc3d7]">—</span>
-                <input type="number" placeholder="$Max" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))} className="w-full bg-[#dfd7e5] border-none rounded-xl text-sm focus:ring-1 focus:ring-[#0051d5] focus:bg-white transition-all p-2" />
+                <input type="number" placeholder="₹Max" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value === "" ? "" : Number(e.target.value))} className="w-full bg-[#dfd7e5] border-none rounded-xl text-sm focus:ring-1 focus:ring-[#0051d5] focus:bg-white transition-all p-2" />
               </div>
             </div>
           </div>

@@ -118,11 +118,7 @@ export default function TextilesPage() {
                       <span className="font-display text-lg text-[#5300b7]">₹{fabric.price}</span>
                     </div>
                     <p className="text-sm text-[#4a4455] mb-4 leading-relaxed line-clamp-2">{fabric.description}</p>
-                    <div className="grid grid-cols-2 gap-4 py-4 border-t border-[#ccc3d7]/20 mt-auto">
-                      <div>
-                        <p className="text-[10px] font-semibold text-[#4a4455] uppercase tracking-wider mb-1">Supplier</p>
-                        <p className="text-sm text-[#1d1a24]">{fabric.supplier?.companyName || "Revora Sourcing"}</p>
-                      </div>
+                    <div className="flex justify-end py-4 border-t border-[#ccc3d7]/20 mt-auto">
                       <div>
                         <p className="text-[10px] font-semibold text-[#4a4455] uppercase tracking-wider mb-1">Stock</p>
                         <p className="text-sm text-[#1d1a24]">{fabric.stock}</p>

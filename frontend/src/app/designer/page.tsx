@@ -229,7 +229,7 @@ export default function DesignerDashboard() {
                   {uploadSuccess && <div className="bg-white/20 text-white text-xs font-semibold p-3 rounded-xl">✓ Published! Pending admin review.</div>}
                   <input required value={pName} onChange={e => setPName(e.target.value)} placeholder="Collection Name" className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20" />
                   <div className="grid grid-cols-2 gap-2">
-                    <input required type="number" value={pPrice} onChange={e => setPPrice(e.target.value)} placeholder="Price ($)" className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20" />
+                    <input required type="number" value={pPrice} onChange={e => setPPrice(e.target.value)} placeholder="Price (₹)" className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20" />
                     <input required type="number" value={pStock} onChange={e => setPStock(e.target.value)} placeholder="Stock" className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20" />
                   </div>
                   <textarea value={pDesc} onChange={e => setPDesc(e.target.value)} placeholder="Description…" rows={2} className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 resize-none" />
@@ -263,7 +263,7 @@ export default function DesignerDashboard() {
                         <p className="text-xs text-[#4a4455]">{p.category}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-semibold text-[#1d1a24]">${p.price}</p>
+                        <p className="text-sm font-semibold text-[#1d1a24]">₹{p.price}</p>
                         <div className="mt-1">
                           <StatusBadge type="product" status={p.status} />
                         </div>
