@@ -68,7 +68,7 @@ export class PaymentsService {
             })),
           },
           payment: {
-            create: { amount: total, currency: 'INR', status: 'PENDING', eventId: dto.txnId || null },
+            create: { amount: total, currency: 'INR', status: 'PENDING' },
           },
         },
         include: { items: true, payment: true },
