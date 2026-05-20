@@ -43,10 +43,7 @@ export default function HomePage() {
 
         {/* Hero Content */}
         <div className="relative z-10 w-full max-w-[1400px] px-6 md:px-16 pt-20 flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
-            <span className="w-2 h-2 rounded-full bg-[#5300b7] animate-pulse"></span>
-            <span className="text-xs uppercase tracking-[0.2em] font-semibold text-white/80">Revora OS</span>
-          </div>
+
           
           <h1 className="font-display text-6xl md:text-8xl lg:text-[120px] font-bold tracking-tighter leading-none mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white via-white/90 to-white/30">
             FASHION <br className="hidden md:block" /> UNBOUND
