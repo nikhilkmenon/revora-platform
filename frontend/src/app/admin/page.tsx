@@ -309,6 +309,7 @@ export default function AdminDashboard() {
                 <thead className="bg-[#f9f1ff] text-[#4a4455] text-[11px] uppercase font-semibold tracking-wider border-b border-[#ccc3d7]/20">
                   <tr>
                     <th className="py-3 px-6">Order ID</th>
+                    <th className="py-3 px-6">Items</th>
                     <th className="py-3 px-6">Razorpay ID</th>
                     <th className="py-3 px-6">Amount</th>
                     <th className="py-3 px-6">Payment</th>
@@ -323,6 +324,11 @@ export default function AdminDashboard() {
                     ) : orderSlice.map(order => (
                       <tr key={order.id} className="hover:bg-[#f9f1ff]/50 transition-colors">
                         <td className="py-4 px-6 font-mono text-xs text-[#4a4455]">…{order.id.slice(-8)}</td>
+                        <td className="py-4 px-6 text-xs text-[#1d1a24]">
+                          {order.items?.length 
+                            ? order.items.map(i => `${i.product?.name || 'Item'} (x${i.quantity})`).join(', ') 
+                            : "—"}
+                        </td>
                         <td className="py-4 px-6 font-mono text-xs text-[#7b7486]">{order.razorpayOrderId?.slice(-12) ?? "—"}</td>
                         <td className="py-4 px-6 font-semibold text-[#5300b7]">₹{order.total.toLocaleString()}</td>
                         <td className="py-4 px-6">{order.payment ? <StatusBadge type="payment" status={order.payment.status} /> : "—"}</td>

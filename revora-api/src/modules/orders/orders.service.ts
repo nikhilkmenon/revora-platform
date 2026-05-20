@@ -13,6 +13,45 @@ export class OrdersService {
     });
   }
 
+  // BUG #23 FIX: Fetch all orders (For Admins)
+  async findAll() {
+    return this.prisma.order.findMany({
+      include: { items: { include: { product: true } }, payment: true, tracking: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  // BUG #23 FIX: Fetch orders containing designer's products
+  async findForDesigner(userId: string) {
+    const designer = await this.prisma.designer.findUnique({
+      where: { userId },
+    });
+    
+    if (!designer) {
+      return [];
+    }
+
+    return this.prisma.order.findMany({
+      where: {
+        items: {
+          some: {
+            product: {
+              designerId: designer.id,
+            },
+          },
+        },
+      },
+      include: { 
+        items: { 
+          include: { product: true } 
+        }, 
+        payment: true, 
+        tracking: true 
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   // BUG #23 FIX: Fetch a single order (with ownership check)
   async getOrderById(orderId: string, userId: string) {
     const order = await this.prisma.order.findUnique({

@@ -9,8 +9,13 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get()
-  myOrders(@GetUser('id') userId: string) {
-    return this.ordersService.findByUser(userId);
+  myOrders(@GetUser() user: any) {
+    if (user.role === 'ADMIN') {
+      return this.ordersService.findAll();
+    } else if (user.role === 'DESIGNER') {
+      return this.ordersService.findForDesigner(user.id);
+    }
+    return this.ordersService.findByUser(user.id);
   }
 
   // BUG #23 FIX: GET single order
