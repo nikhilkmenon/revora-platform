@@ -20,8 +20,8 @@ const PROTECTED_ROUTES = [
 // Routes only for unauthenticated users
 const AUTH_ONLY_ROUTES = ["/login"];
 
-// Token cookie name (mirrors the localStorage key used client-side)
-const TOKEN_KEY = "revora_token";
+// Token cookie name (mirrors the presence flag set by auth service)
+const TOKEN_KEY = "is_authenticated";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

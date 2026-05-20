@@ -62,6 +62,8 @@ model User {
   avatar        String?
   role          Role      @default(BUYER)
   googleId      String?   @unique
+  oauthCode     String?   @unique
+  oauthCodeExpiresAt DateTime?
   refreshToken  String?
   isActive      Boolean   @default(true)
   createdAt     DateTime  @default(now())

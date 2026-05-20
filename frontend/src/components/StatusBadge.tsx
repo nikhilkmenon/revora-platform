@@ -13,7 +13,7 @@ const VARIANT_STYLES: Record<StatusVariant, string> = {
 
 function getOrderVariant(status: OrderStatus): StatusVariant {
   const map: Record<OrderStatus, StatusVariant> = {
-    COMPLETED: "success", CONFIRMED: "info", PENDING: "warning",
+    SHIPPED: "info", DELIVERED: "success", CONFIRMED: "info", PENDING: "warning",
     CANCELLED: "error", RETURNED: "neutral",
   };
   return map[status] ?? "neutral";
@@ -35,7 +35,7 @@ function getProductVariant(status: ProductStatus): StatusVariant {
 
 function getKycVariant(status: KycStatus): StatusVariant {
   const map: Record<KycStatus, StatusVariant> = {
-    APPROVED: "success", SUBMITTED: "warning", NOT_SUBMITTED: "neutral", REJECTED: "error",
+    APPROVED: "success", SUBMITTED: "info", PENDING: "warning", REJECTED: "error",
   };
   return map[status] ?? "neutral";
 }

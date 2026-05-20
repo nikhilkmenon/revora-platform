@@ -1,30 +1,25 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { InjectRedis } from '@nestjs-modules/ioredis';
-import Redis from 'ioredis';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    private prisma: PrismaService,
-    @InjectRedis() private readonly redis: Redis,
+    private prisma: PrismaService
   ) {}
 
-  async findAll({ category, search, page, limit }: any) {
-    // BUG #15 FIX: hard-cap pagination to prevent DoS via limit=999999
+  async findAll({ category, search, page, limit, status }: any) {
     const safePage  = Math.max(1, Number(page) || 1);
     const safeLimit = Math.min(100, Math.max(1, Number(limit) || 20));
 
-    const cacheKey = `products:${JSON.stringify({ category, search, safePage, safeLimit })}`;
-
-    // BUG #12 FIX: Redis cache with 2-minute TTL
-    const cached = await this.redis.get(cacheKey);
-    if (cached) return JSON.parse(cached);
-
-    const where: any = { status: 'APPROVED' };
+    const where: any = {};
+    if (status) {
+      where.status = status;
+    } else {
+      where.status = 'APPROVED';
+      where.stock = { gt: 0 }; // Automatically remove out of stock products from the shop
+    }
     if (category) where.category = category;
-    // TODO: Route through Meilisearch when MEILISEARCH_HOST is configured (BUG #10)
     if (search) where.OR = [
       { name: { contains: search, mode: 'insensitive' } },
       { description: { contains: search, mode: 'insensitive' } },
@@ -41,9 +36,7 @@ export class ProductsService {
       this.prisma.product.count({ where }),
     ]);
 
-    const result = { data, total, page: safePage, limit: safeLimit, pages: Math.ceil(total / safeLimit) };
-    await this.redis.setex(cacheKey, 120, JSON.stringify(result)); // 2-minute TTL
-    return result;
+    return { data, total, page: safePage, limit: safeLimit, pages: Math.ceil(total / safeLimit) };
   }
 
   async findOne(id: string) {
@@ -56,13 +49,30 @@ export class ProductsService {
   }
 
   async create(dto: CreateProductDto, userId: string) {
-    const designer = await this.prisma.designer.findUnique({ where: { userId } });
-    if (!designer) throw new ForbiddenException('Designer profile required');
-    if (!designer.isApproved) throw new ForbiddenException('KYC approval required');
+    // Find or auto-create a designer profile for this user
+    let designer = await this.prisma.designer.findUnique({ where: { userId } });
+    if (!designer) {
+      const user = await this.prisma.user.findUnique({ where: { id: userId } });
+      designer = await this.prisma.designer.create({
+        data: {
+          userId,
+          brandName: user?.name || 'Unnamed Brand',
+          bio: '',
+          isApproved: false,
+        },
+      });
+    }
 
     return this.prisma.product.create({
       data: {
-        ...dto,
+        name: dto.name,
+        description: dto.description,
+        price: dto.price,
+        category: dto.category,
+        images: dto.images ?? [],
+        stock: dto.stock ?? 0,
+        tags: [],
+        aiTags: [],
         designerId: designer.id,
         status: 'PENDING_APPROVAL',
         sku: `SKU-${Date.now()}`,
@@ -74,17 +84,41 @@ export class ProductsService {
     const product = await this.prisma.product.findUnique({ where: { id } });
     if (!product) throw new NotFoundException('Product not found');
 
-    await this.prisma.auditLog.create({
-      data: { userId: adminId, action: 'PRODUCT_APPROVED', entity: 'Product', entityId: id },
-    });
-
-    // BUG #12: Invalidate product cache on approval
-    const keys = await this.redis.keys('products:*');
-    if (keys.length > 0) await this.redis.del(...keys);
+    try {
+      await this.prisma.auditLog.create({
+        data: { userId: adminId, action: 'PRODUCT_APPROVED', entity: 'Product', entityId: id },
+      });
+    } catch (_) {
+      // auditLog may not exist in all envs
+    }
 
     return this.prisma.product.update({
       where: { id },
       data: { status: 'APPROVED' },
     });
+  }
+
+  async reject(id: string, adminId: string, reason: string) {
+    const product = await this.prisma.product.findUnique({ where: { id } });
+    if (!product) throw new NotFoundException('Product not found');
+
+    return this.prisma.product.update({
+      where: { id },
+      data: { status: 'REJECTED' },
+    });
+  }
+
+  async remove(id: string) {
+    const product = await this.prisma.product.findUnique({ where: { id } });
+    if (!product) throw new NotFoundException('Product not found');
+    try {
+      return await this.prisma.product.delete({ where: { id } });
+    } catch (error) {
+      // If it's attached to an order, soft-delete it by rejecting
+      return await this.prisma.product.update({
+        where: { id },
+        data: { status: 'REJECTED' }
+      });
+    }
   }
 }

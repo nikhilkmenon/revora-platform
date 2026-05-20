@@ -6,12 +6,14 @@ import { fabricsService, Fabric } from "@/services/fabrics";
 import { EmptyState } from "@/components/EmptyState";
 import { FabricSkeleton } from "@/components/LoadingSkeleton";
 import { useApi } from "@/hooks/useApi";
+import { useCart } from "@/hooks/useCart";
 
 const MATERIALS = ["Organic Cotton", "Recycled Polyester", "Tencel Lyocell", "Hemp Blend", "Silk", "Wool", "Cashmere", "Linen"];
 const CERTS = ["GOTS", "OEKO-TEX", "Bluesign", "GRS"];
 
 export default function TextilesPage() {
   const { data: fabrics, loading, error, execute } = useApi<Fabric[]>(fabricsService.getAll);
+  const { addItem } = useCart();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCerts, setSelectedCerts] = useState<Set<string>>(new Set());
 
@@ -71,7 +73,7 @@ export default function TextilesPage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
             <div>
               <h1 className="font-display text-4xl md:text-5xl font-semibold tracking-tight text-[#1d1a24] mb-2">Technical Textiles</h1>
-              <p className="text-sm text-[#4a4455]">Direct-to-mill sustainable textile sourcing. Premium structural fibers, silk draping yards, high-performance yarns.</p>
+              <p className="text-sm text-[#4a4455]">Direct-to-mill sustainable textile sourcing. Premium structural fibers, silk draping materials, high-performance yarns.</p>
             </div>
             <div className="flex items-center gap-4 bg-white rounded-full px-4 py-2 border border-[#ccc3d7]/20">
               <span className="text-xs font-semibold text-[#4a4455]">Sort by:</span>
@@ -113,30 +115,36 @@ export default function TextilesPage() {
                   <div className="p-6 flex flex-col flex-grow bg-white">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-display text-lg font-medium text-[#1d1a24]">{fabric.name}</h3>
-                      <span className="font-display text-lg text-[#5300b7]">${fabric.price}<span className="text-sm text-[#4a4455]">/yd</span></span>
+                      <span className="font-display text-lg text-[#5300b7]">₹{fabric.price}</span>
                     </div>
                     <p className="text-sm text-[#4a4455] mb-4 leading-relaxed line-clamp-2">{fabric.description}</p>
-                    <div className={`grid ${idx === 0 ? "grid-cols-4" : "grid-cols-2"} gap-4 py-4 border-t border-[#ccc3d7]/20 mt-auto`}>
+                    <div className="grid grid-cols-2 gap-4 py-4 border-t border-[#ccc3d7]/20 mt-auto">
                       <div>
                         <p className="text-[10px] font-semibold text-[#4a4455] uppercase tracking-wider mb-1">Supplier</p>
                         <p className="text-sm text-[#1d1a24]">{fabric.supplier?.companyName || "Revora Sourcing"}</p>
                       </div>
                       <div>
                         <p className="text-[10px] font-semibold text-[#4a4455] uppercase tracking-wider mb-1">Stock</p>
-                        <p className="text-sm text-[#1d1a24]">{fabric.stock} yd</p>
+                        <p className="text-sm text-[#1d1a24]">{fabric.stock}</p>
                       </div>
-                      {idx === 0 && (
-                        <>
-                          <div>
-                            <p className="text-[10px] font-semibold text-[#4a4455] uppercase tracking-wider mb-1">Category</p>
-                            <p className="text-sm text-[#1d1a24]">{fabric.category}</p>
-                          </div>
-                          <div className="flex items-end justify-end">
-                            <button className="px-4 py-2 bg-[#332f39] text-white rounded-full text-xs font-semibold hover:bg-[#5300b7] transition-colors w-full">Request Swatch</button>
-                          </div>
-                        </>
-                      )}
                     </div>
+                    <button 
+                      onClick={(e) => { 
+                        e.stopPropagation(); 
+                        addItem({
+                          id: fabric.id,
+                          name: fabric.name,
+                          price: fabric.price,
+                          image: fabric.image,
+                          quantity: 1,
+                          designer: fabric.supplier?.companyName || "Revora Sourcing"
+                        });
+                        alert("Added to cart!");
+                      }} 
+                      className="mt-2 w-full py-2.5 bg-[#332f39] text-white rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#5300b7] transition-colors"
+                    >
+                      Buy
+                    </button>
                   </div>
                 </article>
               ))}

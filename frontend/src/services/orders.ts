@@ -1,65 +1,46 @@
 import { api } from "@/lib/api-client";
 
-export interface OrderItem {
-  id: string;
-  orderId: string;
-  productId: string;
-  quantity: number;
-  price: number;
-  product?: {
-    name: string;
-    image: string;
-    designer?: {
-      brandName: string;
-    };
+import type { Order, OrderItem, CreateOrderDto, RazorpayOrderResponse } from "@/types";
+
+export type { Order, OrderItem, CreateOrderDto, RazorpayOrderResponse };
+
+function normalizeOrder(order: any): Order {
+  if (!order) return order;
+  return {
+    ...order,
+    total: typeof order.total === "string" ? parseFloat(order.total) : (order.total ?? 0),
+    items: Array.isArray(order.items)
+      ? order.items.map((item: any) => ({
+          ...item,
+          price: typeof item.price === "string" ? parseFloat(item.price) : (item.price ?? 0),
+        }))
+      : [],
+    payment: order.payment
+      ? {
+          ...order.payment,
+          amount: typeof order.payment.amount === "string" ? parseFloat(order.payment.amount) : (order.payment.amount ?? 0),
+        }
+      : undefined,
   };
-}
-
-export interface Order {
-  id: string;
-  userId: string;
-  razorpayOrderId: string;
-  total: number;
-  address: string;
-  status: "PENDING" | "CONFIRMED" | "CANCELLED" | "RETURNED" | "COMPLETED";
-  expiresAt: string;
-  createdAt: string;
-  items?: OrderItem[];
-  payment?: {
-    id: string;
-    amount: number;
-    currency: string;
-    status: "PENDING" | "CAPTURED" | "FAILED" | "REFUNDED";
-  };
-}
-
-export interface CreateOrderDto {
-  address: string;
-  items: {
-    productId: string;
-    quantity: number;
-  }[];
-}
-
-export interface RazorpayOrderResponse {
-  orderId: string;
-  razorpayOrderId: string;
-  amount: number;
-  currency: string;
-  key: string;
 }
 
 export const ordersService = {
-  async create(dto: CreateOrderDto): Promise<RazorpayOrderResponse> {
-    return api.post<RazorpayOrderResponse>("payments/create-order", dto);
+  async create(dto: CreateOrderDto): Promise<any> {
+    return api.post<any>("payments/create-order", dto);
+  },
+
+  async verifyPayment(data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string; internalOrderId: string }): Promise<any> {
+    return api.post<any>("payments/verify-payment", data);
   },
 
   async getAll(): Promise<Order[]> {
-    return api.get<Order[]>("orders");
+    const raw = await api.get<any[]>("orders");
+    return Array.isArray(raw) ? raw.map(normalizeOrder) : [];
   },
 
   async getOne(id: string): Promise<Order> {
-    return api.get<Order>(`orders/${id}`);
+    const raw = await api.get<any>(`orders/${id}`);
+    return normalizeOrder(raw);
   },
 
   async cancel(id: string): Promise<void> {

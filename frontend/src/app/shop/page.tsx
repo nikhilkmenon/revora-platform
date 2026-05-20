@@ -133,7 +133,7 @@ export default function ShopPage() {
                         <p className="text-xs text-[#4a4455] uppercase tracking-widest mb-1">{product.designer?.brandName || "Atelier Maison"}</p>
                         <Link href={`/products/${product.id}`} className="font-display text-xl font-medium text-[#1d1a24] hover:text-[#5300b7] transition-colors line-clamp-1 block">{product.name}</Link>
                       </div>
-                      <span className="font-display text-xl font-medium text-[#5300b7]">${product.price.toLocaleString()}</span>
+                      <span className="font-display text-xl font-medium text-[#5300b7]">₹{product.price.toLocaleString()}</span>
                     </div>
                     <p className="text-sm text-[#4a4455] line-clamp-2 mb-4 leading-relaxed">{product.description}</p>
                     <div className="mt-auto pt-4 flex items-center justify-between border-t border-[#ccc3d7]/10">

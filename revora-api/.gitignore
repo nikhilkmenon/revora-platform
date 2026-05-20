@@ -110,3 +110,4 @@ public
 # Prisma
 *.db
 *.db-journal
+.env

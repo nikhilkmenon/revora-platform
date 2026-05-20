@@ -52,23 +52,9 @@ export class PaymentsService {
       // Order expiry set to 15 minutes
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
-      let rzpOrder: any;
-      try {
-        rzpOrder = await this.razorpay.orders.create({
-          amount: Math.round(Number(total) * 100),
-          currency: 'INR',
-          receipt: `rcpt_${Date.now()}`,
-          notes: { userId },
-        });
-      } catch (err) {
-        this.logger.error('Razorpay order creation failed', err);
-        throw new InternalServerErrorException('Payment gateway error');
-      }
-
       const order = await prisma.order.create({
         data: {
           userId,
-          razorpayOrderId: rzpOrder.id,
           idempotencyKey,
           total,
           address: dto.address,
@@ -82,20 +68,93 @@ export class PaymentsService {
             })),
           },
           payment: {
-            create: { amount: total, currency: 'INR', status: 'PENDING' },
+            create: { amount: total, currency: 'INR', status: 'PENDING', eventId: dto.txnId || null },
           },
         },
         include: { items: true, payment: true },
       });
 
+      const amountInPaise = Math.max(100, Math.round(total * 100)); // Minimum 100 paise
+      const razorpayOrder = await this.razorpay.orders.create({
+        amount: amountInPaise,
+        currency: 'INR',
+        receipt: order.id,
+      });
+
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { razorpayOrderId: razorpayOrder.id }
+      });
+
       return {
-        orderId: order.id,
-        razorpayOrderId: rzpOrder.id,
-        amount: rzpOrder.amount,
-        currency: rzpOrder.currency,
-        key: this.config.get('RAZORPAY_KEY_ID'),
+        order_id: razorpayOrder.id,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        internalOrderId: order.id,
+        message: 'Order created',
       };
     });
+  }
+
+  // ── Verify Payment Signature ──────────────────────────────────────────
+  async verifyPayment(orderId: string, paymentId: string, signature: string, internalOrderId: string) {
+    const secret = this.config.get('RAZORPAY_KEY_SECRET');
+    if (!secret) throw new InternalServerErrorException('Razorpay secret not configured');
+
+    const generatedSignature = crypto
+      .createHmac('sha256', secret)
+      .update(orderId + '|' + paymentId)
+      .digest('hex');
+
+    if (generatedSignature !== signature) {
+      throw new BadRequestException('Invalid payment signature');
+    }
+
+    const order = await this.prisma.order.findUnique({
+      where: { id: internalOrderId },
+      include: { payment: true, items: { include: { product: true } } },
+    });
+
+    if (!order) throw new NotFoundException('Order not found');
+
+    if (order.status === 'CONFIRMED') {
+      return { success: true, message: 'Payment verified successfully (already processed)' };
+    }
+
+    await this.prisma.$transaction(async (prisma) => {
+      await prisma.order.update({ where: { id: order.id }, data: { status: 'CONFIRMED' } });
+
+      await prisma.payment.update({
+        where: { orderId: order.id },
+        data: { razorpayPayId: paymentId, status: 'CAPTURED', webhookVerified: true, eventId: paymentId },
+      });
+
+      // Calculate payouts to the designers (90% goes to designer, 10% platform fee)
+      if (order.items.length > 0) {
+        const designerTotals = new Map<string, number>();
+        for (const item of order.items) {
+          const prev = designerTotals.get(item.product.designerId) || 0;
+          designerTotals.set(item.product.designerId, prev + Number(item.price) * item.quantity);
+        }
+
+        for (const [designerId, subtotal] of designerTotals) {
+          await prisma.payout.create({
+            data: {
+              designerId,
+              orderId: order.id,
+              amount: subtotal * 0.90,
+              status: 'PENDING',
+            },
+          });
+        }
+      }
+
+      await prisma.orderTracking.create({
+        data: { orderId: order.id, status: 'CONFIRMED', message: 'Payment confirmed via verification. Escrow created.' },
+      });
+    });
+
+    return { success: true, message: 'Payment verified successfully' };
   }
 
   // ── Handle Razorpay webhook (With Replay Prevention) ─────────────────
@@ -149,6 +208,7 @@ export class PaymentsService {
     });
 
     if (!order) return;
+    if (order.status === 'CONFIRMED') return;
 
     await this.prisma.$transaction(async (prisma) => {
       await prisma.order.update({ where: { id: order.id }, data: { status: 'CONFIRMED' } });
@@ -215,13 +275,16 @@ export class PaymentsService {
   }
 
   // ── Refund order ─────────────────────────────────────────────────────
-  async refundOrder(orderId: string, userId: string) {
+  async refundOrder(orderId: string, user: any) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
       include: { payment: true, items: true },
     });
 
-    if (!order || order.userId !== userId) throw new NotFoundException('Order not found');
+    if (!order) throw new NotFoundException('Order not found');
+    if (order.userId !== user.id && user.role !== 'ADMIN') {
+      throw new UnauthorizedException('You do not have permission to refund this order');
+    }
     if (order.status !== 'CONFIRMED' || !order.payment?.razorpayPayId) {
       throw new BadRequestException('Order cannot be refunded');
     }

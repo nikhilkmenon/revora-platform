@@ -1,6 +1,6 @@
 import {
   Controller, Post, Body, Req, Res, Get,
-  UseGuards, HttpCode, HttpStatus,
+  UseGuards, HttpCode, HttpStatus, UnauthorizedException,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { Request, Response } from 'express';
@@ -10,21 +10,44 @@ import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { GetUser } from '../../common/decorators/get-user.decorator';
-import { InjectRedis } from '@nestjs-modules/ioredis';
-import Redis from 'ioredis';
+
+// Seed secret — must match ADMIN_SEED_SECRET env var
+const SEED_SECRET = process.env.ADMIN_SEED_SECRET || 'REVORA_SEED_2026_SECURE';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
-    @InjectRedis() private readonly redis: Redis,
+    private readonly authService: AuthService
   ) {}
+
+  // ── One-time admin seed ─────────────────────────────────────────────
+  @Post('seed-admin')
+  @HttpCode(HttpStatus.OK)
+  async seedAdmin(
+    @Body() body: { secret: string; email: string; password: string; name: string },
+  ) {
+    if (body.secret !== SEED_SECRET) throw new UnauthorizedException('Invalid seed secret');
+    return this.authService.seedAdmin(body.email, body.password, body.name);
+  }
 
   // ── Sign up ─────────────────────────────────────────────────────────
   @Post('signup')
   @Throttle({ short: { limit: 3, ttl: 60000 } })
-  async signup(@Body() dto: SignupDto) {
-    return this.authService.signup(dto);
+  async signup(
+    @Body() dto: SignupDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const result = await this.authService.signup(dto);
+
+    res.cookie('refresh_token', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/api/v1/auth/refresh',
+    });
+
+    return { accessToken: result.accessToken, user: result.user };
   }
 
   // ── Log in ──────────────────────────────────────────────────────────
@@ -98,38 +121,34 @@ export class AuthController {
     return { message: 'Redirect to Google' };
   }
 
-  // BUG #16 FIX: Store token in Redis with a short-lived one-time code,
-  // redirect only the code (NOT the token) to prevent token leakage via
-  // URL logs, browser history, and Referer headers.
   @Get('google/callback')
-  async googleCallback(@Req() req: any, @Res({ passthrough: true }) res: Response) {
+  async googleCallback(@Req() req: any, @Res() res: Response) {
     const result = await this.authService.googleLogin(req.user);
-    res.cookie('refresh_token', result.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: '/api/v1/auth/refresh',
-    });
-
-    // Store access token in Redis with a 30-second one-time code
-    const code = crypto.randomBytes(16).toString('hex');
-    await this.redis.setex(`oauth:code:${code}`, 30, result.accessToken);
-
-    // Redirect with only the code — frontend exchanges it immediately
-    res.redirect(`${process.env.FRONTEND_URL}/auth/callback?code=${code}`);
+    res.redirect(`${process.env.FRONTEND_URL}/auth/callback?code=${result.code}`);
   }
 
   // ── Google OAuth code exchange ────────────────────────────────────────
   // Frontend calls POST /auth/google/exchange { code } → { accessToken }
   @Post('google/exchange')
   @HttpCode(HttpStatus.OK)
-  async googleExchange(@Body() body: { code: string }) {
+  async googleExchange(
+    @Body() body: { code: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const { code } = body;
-    if (!code) return { error: 'Missing code' };
-    const accessToken = await this.redis.get(`oauth:code:${code}`);
-    if (!accessToken) return { error: 'Invalid or expired code' };
-    await this.redis.del(`oauth:code:${code}`); // One-time use
-    return { accessToken };
+    if (!code) throw new UnauthorizedException('Missing authentication code');
+    
+    const result = await this.authService.exchangeGoogleCode(code);
+    
+    // Refresh token → httpOnly cookie (SameSite=Strict, path scoped)
+    res.cookie('refresh_token', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/api/v1/auth/refresh',
+    });
+
+    return { accessToken: result.accessToken, user: result.user };
   }
 }

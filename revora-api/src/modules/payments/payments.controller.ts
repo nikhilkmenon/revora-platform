@@ -23,14 +23,28 @@ export class PaymentsController {
     return this.paymentsService.createOrder(dto, userId, idempotencyKey);
   }
 
+  // ── Verify Razorpay payment ──────────────────────────────────────────
+  @Post('verify-payment')
+  @UseGuards(JwtAuthGuard)
+  async verifyPayment(
+    @Body() body: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string; internalOrderId: string }
+  ) {
+    return this.paymentsService.verifyPayment(
+      body.razorpay_order_id,
+      body.razorpay_payment_id,
+      body.razorpay_signature,
+      body.internalOrderId
+    );
+  }
+
   // ── Refund order ─────────────────────────────────────────────────────
   @Post(':id/refund')
   @UseGuards(JwtAuthGuard)
   async refundOrder(
     @Param('id') orderId: string,
-    @GetUser('id') userId: string,
+    @GetUser() user: any,
   ) {
-    return this.paymentsService.refundOrder(orderId, userId);
+    return this.paymentsService.refundOrder(orderId, user);
   }
 
   // ── Razorpay webhook ─────────────────────────────────────────────────

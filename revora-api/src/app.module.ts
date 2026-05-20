@@ -37,37 +37,37 @@ import { RedisModule } from '@nestjs-modules/ioredis';
     ScheduleModule.forRoot(),
 
     // ── Queue Architecture (Redis) ────────────────────────────────────
-    BullModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        connection: {
-          url: config.get('REDIS_URL'),
-        },
-      }),
-    }),
+    // BullModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: async (config: ConfigService) => ({
+    //     connection: {
+    //       url: config.get('REDIS_URL'),
+    //     },
+    //   }),
+    // }),
 
     // ── Global Caching (Redis) ────────────────────────────────────────
-    CacheModule.registerAsync({
-      isGlobal: true,
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        store: await redisStore({
-          url: config.get('REDIS_URL'),
-        }),
-      }),
-    }),
+    // CacheModule.registerAsync({
+    //   isGlobal: true,
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: async (config: ConfigService) => ({
+    //     store: await redisStore({
+    //       url: config.get('REDIS_URL'),
+    //     }),
+    //   }),
+    // }),
 
     // ── Redis Connection Module ───────────────────────────────────────
-    RedisModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'single',
-        url: config.get('REDIS_URL'),
-      }),
-    }),
+    // RedisModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (config: ConfigService) => ({
+    //     type: 'single',
+    //     url: config.get('REDIS_URL'),
+    //   }),
+    // }),
 
     // ── Centralized Logging (Pino) ────────────────────────────────────
     LoggerModule.forRoot({

@@ -1,7 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useAuth } from "@/features/auth/AuthContext";
 import { productsService, Product } from "@/services/products";
 import { kycService, KycVerification } from "@/services/kyc";
 import { DashboardSkeleton } from "@/components/LoadingSkeleton";
@@ -16,6 +18,8 @@ const NAV_ITEMS = [
 ];
 
 export default function DesignerDashboard() {
+  const { user, logout } = useAuth();
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [kycStatus, setKycStatus] = useState<string>("NOT_SUBMITTED");
   const [kycRecord, setKycRecord] = useState<KycVerification | null>(null);
@@ -57,11 +61,25 @@ export default function DesignerDashboard() {
       const priceNum = Number(pPrice); const stockNum = Number(pStock);
       if (isNaN(priceNum) || priceNum <= 0) throw new Error("Price must be a valid positive number.");
       if (isNaN(stockNum) || stockNum <= 0) throw new Error("Stock must be a valid positive number.");
-      await productsService.create({ name: pName, description: pDesc, price: priceNum, category: pCategory, stock: stockNum, image: pImage || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=400&q=80" });
+      
+      let finalImage = pImage;
+      if (!finalImage) {
+        finalImage = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=400&q=80";
+      }
+
+      await productsService.create({ name: pName, description: pDesc, price: priceNum, category: pCategory, stock: stockNum, image: finalImage });
       setUploadSuccess(true); setPName(""); setPDesc(""); setPPrice(""); setPStock(""); setPImage("");
       fetchDesignerData();
     } catch (err: any) { setError(err.message || "Product upload failed."); }
     finally { setUploadLoading(false); }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setPImage(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
   const handleKycSubmit = async (e: React.FormEvent) => {
@@ -84,12 +102,12 @@ export default function DesignerDashboard() {
         {/* ── Side Navigation ── */}
         <aside className="bg-[#f9f1ff] text-[#5300b7] h-screen w-72 fixed left-0 top-0 border-r border-[#ccc3d7]/30 flex flex-col gap-2 p-6 z-50">
           <div className="mb-8 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-[#e8e0ee] flex-shrink-0 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[#5300b7]">person</span>
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-[#e8e0ee] flex-shrink-0 flex items-center justify-center text-lg font-bold text-[#5300b7]">
+              {user?.name?.charAt(0).toUpperCase() ?? "D"}
             </div>
             <div>
-              <h2 className="font-display text-lg font-bold text-[#5300b7] tracking-tight">REVORA STUDIO</h2>
-              <p className="text-xs text-[#4a4455] mt-0.5">Design Console</p>
+              <h2 className="font-display text-base font-bold text-[#5300b7] tracking-tight">{user?.name ?? "Designer"}</h2>
+              <p className="text-xs text-[#4a4455] mt-0.5">{user?.email}</p>
             </div>
           </div>
 
@@ -111,9 +129,17 @@ export default function DesignerDashboard() {
           </nav>
 
           <div className="mt-auto flex flex-col gap-4">
-            <button className="flex items-center gap-3 p-3 rounded-2xl text-sm text-[#4a4455] hover:bg-[#e8e0ee]/50 transition-all hover:translate-x-1">
-              <span className="material-symbols-outlined">settings</span>
-              Account
+            <button onClick={() => router.push('/dashboard')} className="flex items-center gap-3 p-3 rounded-2xl text-sm text-[#4a4455] hover:bg-[#e8e0ee]/50 transition-all hover:translate-x-1">
+              <span className="material-symbols-outlined">manage_accounts</span>
+              My Account
+            </button>
+            <button onClick={() => router.push('/orders')} className="flex items-center gap-3 p-3 rounded-2xl text-sm text-[#4a4455] hover:bg-[#e8e0ee]/50 transition-all hover:translate-x-1">
+              <span className="material-symbols-outlined">shopping_bag</span>
+              My Orders
+            </button>
+            <button onClick={logout} className="flex items-center gap-3 p-3 rounded-2xl text-sm text-red-500 hover:bg-red-50 transition-all hover:translate-x-1">
+              <span className="material-symbols-outlined">logout</span>
+              Sign Out
             </button>
             <button
               onClick={() => setActiveNav("upload")}
@@ -131,7 +157,8 @@ export default function DesignerDashboard() {
           {/* Header */}
           <header className="flex justify-between items-end">
             <div>
-              <h1 className="font-display text-3xl font-medium text-[#1d1a24] mb-1">Workspace Overview</h1>
+              <p className="text-xs font-semibold text-[#5300b7] uppercase tracking-widest mb-1">Designer Studio</p>
+              <h1 className="font-display text-3xl font-medium text-[#1d1a24] mb-1">Welcome back, {user?.name?.split(' ')[0] ?? 'Designer'} ✦</h1>
               <p className="text-sm text-[#4a4455]">Manage your active sourcing, inventory, and recent collections.</p>
             </div>
             <div className="flex gap-4 items-center">
@@ -164,7 +191,7 @@ export default function DesignerDashboard() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <p className="text-xs font-semibold text-[#4a4455] mb-1">Collection Revenue</p>
-                    <p className="font-display text-2xl font-medium text-[#1d1a24]">${totalRevenue.toLocaleString()}</p>
+                    <p className="font-display text-2xl font-medium text-[#1d1a24]">₹{totalRevenue.toLocaleString()}</p>
                     <p className="text-sm text-[#10b981] flex items-center mt-1"><span className="material-symbols-outlined text-[16px] mr-1">trending_up</span>+{approved} active</p>
                   </div>
                   <div>
@@ -206,6 +233,11 @@ export default function DesignerDashboard() {
                     <input required type="number" value={pStock} onChange={e => setPStock(e.target.value)} placeholder="Stock" className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20" />
                   </div>
                   <textarea value={pDesc} onChange={e => setPDesc(e.target.value)} placeholder="Description…" rows={2} className="w-full bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 resize-none" />
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] uppercase font-semibold text-white/80">Product Image (Optional)</label>
+                    <input type="file" accept="image/*" onChange={handleImageUpload} className="w-full text-sm text-white/80 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-white/20 file:text-white hover:file:bg-white/30 transition-all cursor-pointer" />
+                    {pImage && pImage.startsWith('data:image') && <span className="text-[10px] text-green-300">✓ Image attached</span>}
+                  </div>
                   <button type="submit" disabled={uploadLoading} className="w-full py-3 bg-white/20 hover:bg-white/30 border border-white/30 rounded-xl text-white text-sm font-semibold flex items-center justify-center gap-2 transition-all disabled:opacity-50">
                     {uploadLoading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><span className="material-symbols-outlined text-sm">cloud_upload</span> Publish</>}
                   </button>

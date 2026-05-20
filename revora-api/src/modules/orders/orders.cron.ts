@@ -9,20 +9,20 @@ export class OrdersCron {
   private readonly logger = new Logger(OrdersCron.name);
 
   constructor(
-    private prisma: PrismaService,
-    @InjectRedis() private readonly redis: Redis,
+    private prisma: PrismaService
   ) {}
 
   // BUG #11 FIX: every 5 min (not every 1 min) + Redis distributed lock
   @Cron('*/5 * * * *')
   async handleExpiredOrders() {
-    const lockKey   = 'cron:expired_orders:lock';
-    const lockValue = process.env.RAILWAY_REPLICA_ID || 'primary';
-    const acquired  = await this.redis.set(lockKey, lockValue, 'EX', 240, 'NX');
-    if (!acquired) {
-      this.logger.debug('Cron lock held by another replica — skipping');
-      return;
-    }
+    // Temporarily disabled Redis distributed lock
+    // const lockKey   = 'cron:expired_orders:lock';
+    // const lockValue = process.env.RAILWAY_REPLICA_ID || 'primary';
+    // const acquired  = await this.redis.set(lockKey, lockValue, 'EX', 240, 'NX');
+    // if (!acquired) {
+    //   this.logger.debug('Cron lock held by another replica — skipping');
+    //   return;
+    // }
 
     try {
       this.logger.debug('Running expired orders check...');
@@ -71,7 +71,7 @@ export class OrdersCron {
         this.logger.log(`Cancelled expired order ${order.id} and released inventory.`);
       }
     } finally {
-      await this.redis.del(lockKey);
+      // await this.redis.del(lockKey);
     }
   }
 }

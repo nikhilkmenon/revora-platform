@@ -10,6 +10,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 
+import * as crypto from 'crypto';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,6 +19,20 @@ export class AuthService {
     private jwtService: JwtService,
     private config: ConfigService,
   ) {}
+
+  // ── Seed Admin (production bootstrap) ───────────────────────────────
+  async seedAdmin(email: string, password: string, name: string) {
+    const passwordHash = await argon2.hash(password, {
+      type: argon2.argon2id, memoryCost: 65536, timeCost: 3, parallelism: 4,
+    });
+    const user = await this.prisma.user.upsert({
+      where: { email },
+      update: { passwordHash, role: 'ADMIN', isActive: true, name },
+      create: { email, name, passwordHash, role: 'ADMIN', isActive: true },
+      select: { id: true, email: true, name: true, role: true },
+    });
+    return { message: 'Admin account created/updated successfully', user };
+  }
 
   // ── Sign up ─────────────────────────────────────────────────────────
   async signup(dto: SignupDto) {
@@ -38,7 +54,7 @@ export class AuthService {
         passwordHash,
         role: dto.role || 'BUYER',
       },
-      select: { id: true, email: true, name: true, role: true },
+      select: { id: true, email: true, name: true, role: true, createdAt: true },
     });
 
     // Log activity
@@ -46,7 +62,20 @@ export class AuthService {
       data: { userId: user.id, action: 'SIGNUP' },
     });
 
-    return { message: 'Account created', user };
+    const tokens = await this.generateTokens(user.id, user.email, user.role);
+
+    // Store hashed refresh token
+    const hashedRefresh = await argon2.hash(tokens.refreshToken);
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken: hashedRefresh },
+    });
+
+    return {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      user,
+    };
   }
 
   // ── Log in ──────────────────────────────────────────────────────────
@@ -147,6 +176,40 @@ export class AuthService {
       });
     }
 
+    const code = crypto.randomBytes(16).toString('hex');
+    const expiresAt = new Date(Date.now() + 30 * 1000); // 30 seconds
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        oauthCode: code,
+        oauthCodeExpiresAt: expiresAt,
+      },
+    });
+
+    return { code };
+  }
+
+  // ── Google OAuth code exchange ────────────────────────────────────────
+  async exchangeGoogleCode(code: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { oauthCode: code },
+    });
+
+    if (!user || !user.oauthCodeExpiresAt || user.oauthCodeExpiresAt < new Date()) {
+      throw new UnauthorizedException('Invalid or expired authentication code');
+    }
+
+    // Invalidate code immediately (one-time use!)
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        oauthCode: null,
+        oauthCodeExpiresAt: null,
+      },
+    });
+
+    // Generate fresh tokens
     const tokens = await this.generateTokens(user.id, user.email, user.role);
     const hashedRefresh = await argon2.hash(tokens.refreshToken);
     await this.prisma.user.update({
@@ -154,7 +217,11 @@ export class AuthService {
       data: { refreshToken: hashedRefresh },
     });
 
-    return { ...tokens, user };
+    return {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      user: { id: user.id, email: user.email, name: user.name, role: user.role },
+    };
   }
 
   // ── Token generation ─────────────────────────────────────────────────

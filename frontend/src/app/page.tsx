@@ -141,7 +141,7 @@ export default function HomePage() {
                       {product.name}
                     </Link>
                     <div className="flex justify-between items-center mt-auto pt-4 border-t border-white/10">
-                      <span className="font-display text-2xl font-medium text-white">${product.price.toLocaleString()}</span>
+                      <span className="font-display text-2xl font-medium text-white">₹{product.price.toLocaleString()}</span>
                       <button className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#5300b7] transition-colors">
                         <span className="material-symbols-outlined text-sm text-white">north_east</span>
                       </button>

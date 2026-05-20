@@ -13,7 +13,7 @@ export interface User {
 
 export interface AuthResponse {
   accessToken: string;
-  refreshToken: string;
+  refreshToken?: string; // Present on signup; absent on login (sent via httpOnly cookie)
   user: User;
 }
 
@@ -26,7 +26,8 @@ export interface Product {
   price: number;
   category: string;
   stock: number;
-  image: string;
+  images: string[];
+  image?: string; // computed from images[0]
   status: ProductStatus;
   sku: string;
   designerId: string;
@@ -54,16 +55,19 @@ export interface Fabric {
   id: string;
   name: string;
   description: string;
-  price: number;
+  pricePerYard: number;
+  price: number; // alias for pricePerYard for display
+  moq: number;
   category: string;
   stock: number;
-  image: string;
+  images: string[];
+  image?: string; // computed from images[0]
   supplierId: string;
   supplier?: { companyName: string };
   createdAt: string;
 }
 
-export type KycStatus = "NOT_SUBMITTED" | "SUBMITTED" | "APPROVED" | "REJECTED";
+export type KycStatus = "PENDING" | "SUBMITTED" | "APPROVED" | "REJECTED";
 
 export interface KycVerification {
   id: string;
@@ -81,7 +85,7 @@ export interface KycVerification {
   };
 }
 
-export type OrderStatus = "PENDING" | "CONFIRMED" | "CANCELLED" | "RETURNED" | "COMPLETED";
+export type OrderStatus = "PENDING" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | "RETURNED";
 export type PaymentStatus = "PENDING" | "CAPTURED" | "FAILED" | "REFUNDED";
 
 export interface OrderItem {
@@ -116,16 +120,16 @@ export interface Order {
 }
 
 export interface CreateOrderDto {
-  address: string;
+  address: any;
+  txnId?: string;
   items: { productId: string; quantity: number }[];
 }
 
 export interface RazorpayOrderResponse {
   orderId: string;
-  razorpayOrderId: string;
   amount: number;
   currency: string;
-  key: string;
+  message?: string;
 }
 
 export interface SubmitKycDto {
@@ -138,7 +142,7 @@ export interface CartItem {
   id: string;
   name: string;
   price: number;
-  image: string;
+  image?: string;
   quantity: number;
   designer?: string;
 }

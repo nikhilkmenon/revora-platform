@@ -20,7 +20,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 function getRoleRedirect(role: UserRole): string {
   if (role === "ADMIN") return "/admin";
   if (role === "DESIGNER") return "/designer";
-  return "/shop";
+  return "/dashboard";
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

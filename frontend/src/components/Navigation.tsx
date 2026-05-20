@@ -12,59 +12,80 @@ export const Navbar: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { items: cartItems, total, count, updateQuantity, clear: clearCart } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
-  const [checkoutAddress, setCheckoutAddress] = useState("");
+  const [checkoutStep, setCheckoutStep] = useState<"address" | "payment">("address");
+  const [addressForm, setAddressForm] = useState({ country: "", state: "", district: "", area: "" });
+  const [txnId, setTxnId] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
+  const calculateDeliveryTime = () => {
+    if (!addressForm.country) return "";
+    if (addressForm.country.toLowerCase() !== "india") return "14-21 Business Days";
+    if (["kerala", "karnataka", "tamil nadu"].includes(addressForm.state.toLowerCase())) return "2-4 Business Days";
+    return "5-7 Business Days";
+  };
+
+  const handleNextStep = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isAuthenticated) return alert("Please login to proceed.");
+    setCheckoutStep("payment");
+  };
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isAuthenticated) {
-      alert("Please login to proceed with checkout.");
-      return;
-    }
-    if (!checkoutAddress.trim()) {
-      alert("Please enter a valid shipping address.");
-      return;
-    }
-
     setCheckoutLoading(true);
+
     try {
-      // Create Razorpay Order in backend
-      const res = await ordersService.create({
-        address: checkoutAddress,
+      const orderRes = await ordersService.create({
+        address: { ...addressForm, deliveryTime: calculateDeliveryTime() },
+        txnId: "RAZORPAY_FLOW",
         items: cartItems.map(item => ({
           productId: item.id,
           quantity: item.quantity,
         }))
       });
 
-      // Load Razorpay Checkout Widget
       const options = {
-        key: res.key,
-        amount: res.amount,
-        currency: res.currency,
-        name: "REVORA Luxury Marketplace",
-        description: "Bespoke Fashion Sourcing",
-        order_id: res.razorpayOrderId,
-        handler: async (paymentRes: any) => {
-          // Verify & Sync webhook/status
-          alert("Order payment successful! Payment details recorded.");
-          clearCart();
-          setOrderSuccess(true);
-          setCartOpen(false);
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: orderRes.amount,
+        currency: orderRes.currency,
+        name: "REVORA",
+        description: "Luxury Sustainable Assets",
+        order_id: orderRes.order_id,
+        handler: async function (response: any) {
+          try {
+            await ordersService.verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              internalOrderId: orderRes.internalOrderId
+            });
+
+            alert("Order placed successfully!");
+            clearCart();
+            setOrderSuccess(true);
+            setCartOpen(false);
+            setAddressForm({ country: "", state: "", district: "", area: "" });
+            setCheckoutStep("address");
+          } catch (verifyErr: any) {
+            alert(`Payment verification failed: ${verifyErr.message}`);
+          }
         },
         prefill: {
-          name: user?.name,
-          email: user?.email,
+          name: user?.name || "",
+          email: user?.email || "",
         },
         theme: {
-          color: "#5300b7",
-        },
+          color: "#5300b7"
+        }
       };
 
       const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', function (response: any){
+        alert(`Payment failed: ${response.error.description}`);
+      });
       rzp.open();
+
     } catch (err: any) {
       alert(`Checkout failed: ${err.message}`);
     } finally {
@@ -74,8 +95,6 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* Script to load Razorpay in client side */}
-      <script src="https://checkout.razorpay.com/v1/checkout.js" async />
 
       <nav className="bg-[#fef7ff]/80 backdrop-blur-xl fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1280px] rounded-full border border-white/20 shadow-lg shadow-[#5300b7]/5 flex items-center justify-between px-8 py-4 z-40">
         <Link href="/" className="font-display text-2xl font-bold tracking-tighter text-[#5300b7]">
@@ -162,7 +181,7 @@ export const Navbar: React.FC = () => {
                     <div className="flex-grow">
                       <p className="font-display font-medium text-sm line-clamp-1">{item.name}</p>
                       {item.designer && <p className="text-[11px] text-on-surface-variant uppercase">{item.designer}</p>}
-                      <p className="text-primary font-bold mt-1">${item.price}</p>
+                      <p className="text-primary font-bold mt-1">₹{item.price}</p>
                       <div className="flex items-center gap-3 mt-2">
                         <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="w-6 h-6 border rounded-full hover:bg-surface-variant flex items-center justify-center text-sm">-</button>
                         <span className="text-sm font-semibold">{item.quantity}</span>
@@ -178,36 +197,60 @@ export const Navbar: React.FC = () => {
               <div className="border-t pt-4 mt-4 space-y-4">
                 <div className="flex justify-between items-center text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-primary">${total.toLocaleString()}</span>
+                  <span className="text-primary">₹{total.toLocaleString()}</span>
                 </div>
 
-                <form onSubmit={handleCheckout} className="space-y-3">
-                  <div>
-                    <label className="text-[10px] uppercase font-bold text-on-surface-variant block mb-1">Shipping Address</label>
-                    <textarea
-                      required
-                      value={checkoutAddress}
-                      onChange={e => setCheckoutAddress(e.target.value)}
-                      placeholder="Street address, City, ZIP code"
-                      rows={2}
-                      className="w-full text-sm p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-primary bg-surface-container-low"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={checkoutLoading}
-                    className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50"
-                  >
-                    {checkoutLoading ? (
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    ) : (
-                      <>
-                        <span className="material-symbols-outlined text-sm">payment</span>
-                        Proceed to Secure Checkout
-                      </>
+                {checkoutStep === "address" ? (
+                  <form onSubmit={handleNextStep} className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[10px] uppercase font-bold text-on-surface-variant block mb-1">Country *</label>
+                        <input required value={addressForm.country} onChange={e => setAddressForm({ ...addressForm, country: e.target.value })} placeholder="India" className="w-full text-sm p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-primary bg-surface-container-low" />
+                      </div>
+                      <div>
+                        <label className="text-[10px] uppercase font-bold text-on-surface-variant block mb-1">State *</label>
+                        <input required value={addressForm.state} onChange={e => setAddressForm({ ...addressForm, state: e.target.value })} placeholder="Kerala" className="w-full text-sm p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-primary bg-surface-container-low" />
+                      </div>
+                      <div>
+                        <label className="text-[10px] uppercase font-bold text-on-surface-variant block mb-1">District *</label>
+                        <input required value={addressForm.district} onChange={e => setAddressForm({ ...addressForm, district: e.target.value })} placeholder="Ernakulam" className="w-full text-sm p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-primary bg-surface-container-low" />
+                      </div>
+                      <div>
+                        <label className="text-[10px] uppercase font-bold text-on-surface-variant block mb-1">Area *</label>
+                        <input required value={addressForm.area} onChange={e => setAddressForm({ ...addressForm, area: e.target.value })} placeholder="Kochi" className="w-full text-sm p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-primary bg-surface-container-low" />
+                      </div>
+                    </div>
+                    {calculateDeliveryTime() && (
+                      <p className="text-xs text-primary font-semibold mt-2">
+                        Estimated Delivery: {calculateDeliveryTime()}
+                      </p>
                     )}
-                  </button>
-                </form>
+                    <button type="submit" className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg mt-4">
+                      Continue to Payment
+                      <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                  </form>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="bg-[#f9f1ff] p-4 rounded-xl border border-primary/20 text-center">
+                      <p className="text-sm font-semibold text-[#1d1a24] mb-2">Secure Payment via Razorpay</p>
+                      <p className="text-xs text-[#4a4455]">You will be redirected to the secure checkout.</p>
+                    </div>
+                    <button type="button" onClick={handleCheckout} disabled={checkoutLoading} className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50">
+                      {checkoutLoading ? (
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <>
+                          <span className="material-symbols-outlined text-sm">lock</span>
+                          Pay Securely
+                        </>
+                      )}
+                    </button>
+                    <button type="button" onClick={() => setCheckoutStep("address")} className="w-full py-2 text-sm text-[#4a4455] hover:text-primary transition-colors">
+                      Back to Address
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>

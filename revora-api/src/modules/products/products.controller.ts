@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, UseGuards, Query } from '@nestjs/common';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -17,8 +17,9 @@ export class ProductsController {
     @Query('search') search?: string,
     @Query('page') page = '1',
     @Query('limit') limit = '20',
+    @Query('status') status?: string,
   ) {
-    return this.productsService.findAll({ category, search, page: +page, limit: +limit });
+    return this.productsService.findAll({ category, search, page: +page, limit: +limit, status });
   }
 
   // Public — single product
@@ -44,5 +45,25 @@ export class ProductsController {
   @Roles('ADMIN', 'SUPER_ADMIN')
   approve(@Param('id') id: string, @GetUser('id') adminId: string) {
     return this.productsService.approve(id, adminId);
+  }
+
+  // Admin only — reject
+  @Post(':id/reject')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'SUPER_ADMIN')
+  reject(
+    @Param('id') id: string,
+    @GetUser('id') adminId: string,
+    @Body('reason') reason: string,
+  ) {
+    return this.productsService.reject(id, adminId, reason);
+  }
+
+  // Admin only — delete product
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'SUPER_ADMIN')
+  remove(@Param('id') id: string) {
+    return this.productsService.remove(id);
   }
 }

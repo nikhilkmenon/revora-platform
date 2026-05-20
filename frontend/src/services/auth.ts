@@ -36,7 +36,7 @@ export const authService = {
         localStorage.removeItem("revora_token");
         localStorage.removeItem("revora_user");
         // Also remove the middleware cookie
-        document.cookie = "revora_token=; Max-Age=0; path=/;";
+        document.cookie = "is_authenticated=; Max-Age=0; path=/;";
       }
     }
   },
@@ -46,8 +46,8 @@ export const authService = {
     if (typeof window === "undefined") return;
     localStorage.setItem("revora_token", response.accessToken);
     localStorage.setItem("revora_user", JSON.stringify(response.user));
-    // Set cookie for middleware — httpOnly not possible from JS, but enough for redirect guard
+    // Set cookie for middleware — store a presence flag only for security
     const maxAge = 60 * 60 * 24 * 7; // 7 days
-    document.cookie = `revora_token=${response.accessToken}; Max-Age=${maxAge}; path=/; SameSite=Strict`;
+    document.cookie = `is_authenticated=1; Max-Age=${maxAge}; path=/; SameSite=Strict`;
   },
 };

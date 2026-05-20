@@ -27,6 +27,24 @@ export default function OrdersPage() {
     }
   };
 
+  const formatAddress = (address: any): string => {
+    if (!address) return "";
+    if (typeof address === "string") {
+      try {
+        const parsed = JSON.parse(address);
+        return formatAddress(parsed);
+      } catch {
+        return address;
+      }
+    }
+    const parts = [];
+    if (address.area) parts.push(address.area);
+    if (address.district) parts.push(address.district);
+    if (address.state) parts.push(address.state);
+    if (address.country) parts.push(address.country);
+    return parts.join(", ");
+  };
+
   return (
     <ProtectedRoute allowedRoles={["BUYER", "DESIGNER", "ADMIN"]}>
       <Navbar />
@@ -77,7 +95,7 @@ export default function OrdersPage() {
                     <StatusBadge type="order" status={order.status} />
                     {order.payment && <StatusBadge type="payment" status={order.payment.status} />}
                     <span className="font-display text-lg font-semibold text-[#1d1a24]">
-                      ${order.total.toLocaleString()}
+                      ₹{order.total.toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -96,7 +114,7 @@ export default function OrdersPage() {
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-[#1d1a24] line-clamp-1">{item.product?.name ?? "Product"}</p>
-                          <p className="text-xs text-[#4a4455]">Qty: {item.quantity} · ${item.price}</p>
+                          <p className="text-xs text-[#4a4455]">Qty: {item.quantity} · ₹{item.price}</p>
                           {item.product?.designer && (
                             <p className="text-[10px] text-[#7b7486] uppercase tracking-wider">{item.product.designer.brandName}</p>
                           )}
@@ -109,7 +127,7 @@ export default function OrdersPage() {
                 {/* Actions */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pt-4 border-t border-[#ccc3d7]/10">
                   <div className="text-xs text-[#4a4455]">
-                    <span className="font-semibold">Ship to:</span> {order.address}
+                    <span className="font-semibold">Ship to:</span> {formatAddress(order.address)}
                   </div>
                   <div className="flex gap-3">
                     {order.status === "PENDING" && (

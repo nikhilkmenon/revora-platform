@@ -1,5 +1,15 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { v2 as cloudinary } from 'cloudinary';
+
+// Initialize Cloudinary with secure keys from environment
+if (process.env.CLOUDINARY_CLOUD_NAME) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+}
 
 export class SubmitKycDto {
   gstDoc?: string;
@@ -11,21 +21,50 @@ export class SubmitKycDto {
 export class KycService {
   constructor(private prisma: PrismaService) {}
 
+  private signDocUrl(url: string | null): string | null {
+    if (!url) return null;
+    try {
+      // Extract Cloudinary public ID if a full URL is passed
+      const match = url.match(/\/v\d+\/([^\s]+)\.[a-z0-9]+$/i);
+      const publicId = match ? match[1] : url;
+
+      // Generate a signed download URL with 1 hour expiration
+      return cloudinary.utils.private_download_url(publicId, 'pdf', {
+        expires_at: Math.floor(Date.now() / 1000) + 3600, // 1 hour
+        attachment: false,
+      });
+    } catch {
+      return url; // fallback to raw url
+    }
+  }
+
   async getStatus(userId: string) {
     const designer = await this.prisma.designer.findUnique({
       where: { userId },
       include: { kyc: true },
     });
     if (!designer) throw new NotFoundException('Designer profile not found');
+    
+    if (designer.kyc) {
+      designer.kyc.gstDoc = this.signDocUrl(designer.kyc.gstDoc);
+      designer.kyc.panDoc = this.signDocUrl(designer.kyc.panDoc);
+    }
+    
     return { kycStatus: designer.kycStatus, kyc: designer.kyc };
   }
 
   async getQueue() {
-    return this.prisma.kycVerification.findMany({
+    const queue = await this.prisma.kycVerification.findMany({
       where: { status: 'SUBMITTED' },
       include: { designer: { include: { user: { select: { name: true, email: true } } } } },
       orderBy: { createdAt: 'asc' },
     });
+
+    return queue.map((kyc) => ({
+      ...kyc,
+      gstDoc: this.signDocUrl(kyc.gstDoc),
+      panDoc: this.signDocUrl(kyc.panDoc),
+    }));
   }
 
   // BUG #21 FIX: Designer submits KYC documents

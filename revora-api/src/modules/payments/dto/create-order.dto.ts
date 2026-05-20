@@ -1,4 +1,4 @@
-import { IsArray, IsObject, IsString, IsInt, Min, ValidateNested } from 'class-validator';
+import { IsArray, IsObject, IsString, IsInt, Min, ValidateNested, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class OrderItemDto {
@@ -18,4 +18,8 @@ export class CreateOrderDto {
 
   @IsObject()
   address: Record<string, any>;
+
+  @IsString()
+  @IsOptional()
+  txnId?: string;
 }

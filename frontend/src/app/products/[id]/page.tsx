@@ -15,14 +15,14 @@ export default function ProductDetailPage() {
   const router = useRouter();
   const id = params?.id as string;
 
-  const { data: product, loading, error, execute } = useApi<Product>(() => productsService.getOne(id));
+  const { data: product, loading, error, execute } = useApi<Product>(productsService.getOne);
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("40");
   const [activeAccordion, setActiveAccordion] = useState("description");
   const [addedToCart, setAddedToCart] = useState(false);
 
-  useEffect(() => { if (id) execute(); }, [id, execute]);
+  useEffect(() => { if (id) execute(id); }, [id, execute]);
 
   const addToCart = () => {
     if (!product) return;
@@ -96,7 +96,7 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="mb-8">
-              <span className="font-display text-2xl font-medium text-[#1d1a24] block mb-1">${product.price.toLocaleString()}</span>
+              <span className="font-display text-2xl font-medium text-[#1d1a24] block mb-1">₹{product.price.toLocaleString()}</span>
               <span className="text-sm text-[#7b7486]">Taxes and duties included.</span>
             </div>
 

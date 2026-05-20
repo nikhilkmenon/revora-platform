@@ -32,29 +32,34 @@ export function useCart() {
   };
 
   const addItem = useCallback((item: Omit<CartItem, "quantity"> & { quantity?: number }) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
-      const next = existing
-        ? prev.map((i) => i.id === item.id ? { ...i, quantity: i.quantity + (item.quantity ?? 1) } : i)
-        : [...prev, { ...item, quantity: item.quantity ?? 1 }];
-      persist(next);
-      return next;
-    });
+    if (typeof window === "undefined") return;
+    const stored = localStorage.getItem(CART_KEY);
+    const prev: CartItem[] = stored ? JSON.parse(stored) : [];
+    const existing = prev.find((i) => i.id === item.id);
+    const next = existing
+      ? prev.map((i) => i.id === item.id ? { ...i, quantity: i.quantity + (item.quantity ?? 1) } : i)
+      : [...prev, { ...item, quantity: item.quantity ?? 1 }];
+    persist(next);
   }, []);
 
   const removeItem = useCallback((id: string) => {
-    setItems((prev) => { const next = prev.filter((i) => i.id !== id); persist(next); return next; });
+    if (typeof window === "undefined") return;
+    const stored = localStorage.getItem(CART_KEY);
+    const prev: CartItem[] = stored ? JSON.parse(stored) : [];
+    const next = prev.filter((i) => i.id !== id);
+    persist(next);
   }, []);
 
   const updateQuantity = useCallback((id: string, qty: number) => {
-    setItems((prev) => {
-      const next = qty <= 0 ? prev.filter((i) => i.id !== id) : prev.map((i) => i.id === id ? { ...i, quantity: qty } : i);
-      persist(next);
-      return next;
-    });
+    if (typeof window === "undefined") return;
+    const stored = localStorage.getItem(CART_KEY);
+    const prev: CartItem[] = stored ? JSON.parse(stored) : [];
+    const next = qty <= 0 ? prev.filter((i) => i.id !== id) : prev.map((i) => i.id === id ? { ...i, quantity: qty } : i);
+    persist(next);
   }, []);
 
   const clear = useCallback(() => {
+    if (typeof window === "undefined") return;
     localStorage.removeItem(CART_KEY);
     setItems([]);
     window.dispatchEvent(new Event(CART_EVENT));

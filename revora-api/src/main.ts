@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import * as Sentry from '@sentry/nestjs';
 import { Logger } from 'nestjs-pino';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter';
+import { json, urlencoded } from 'express';
 
 async function bootstrap() {
   // ── Sentry init (before anything else) ──────────────────────────────
@@ -22,6 +23,10 @@ async function bootstrap() {
     bufferLogs: true,
     logger: new NestLogger(),
   });
+
+  // ── Increase payload limit for Base64 Image Uploads ──
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   // ── Centralized Logging & Error Handling ──────────────────────────────
   const logger = app.get(Logger);
