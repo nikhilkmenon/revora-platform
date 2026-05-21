@@ -125,6 +125,7 @@ export default function TextilesPage() {
                       </div>
                     </div>
                     <button 
+                      disabled={fabric.stock <= 0}
                       onClick={(e) => { 
                         e.stopPropagation(); 
                         addItem({
@@ -137,9 +138,9 @@ export default function TextilesPage() {
                         });
                         alert("Added to cart!");
                       }} 
-                      className="mt-2 w-full py-2.5 bg-[#332f39] text-white rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#5300b7] transition-colors"
+                      className={`mt-2 w-full py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${fabric.stock > 0 ? 'bg-[#332f39] text-white hover:bg-[#5300b7]' : 'bg-[#e8e0ee] text-[#7b7486] cursor-not-allowed'}`}
                     >
-                      Buy
+                      {fabric.stock > 0 ? 'Buy' : 'Out of Stock'}
                     </button>
                   </div>
                 </article>

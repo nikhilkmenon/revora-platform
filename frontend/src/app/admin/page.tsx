@@ -441,7 +441,7 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-semibold text-[#4a4455] block mb-1">Stock *</label>
-                      <input required type="number" min="1" value={fabricForm.stock} onChange={e => setFabricForm(f => ({ ...f, stock: e.target.value }))} placeholder="500" className="w-full text-sm p-3 bg-[#f9f1ff] border border-[#ccc3d7]/40 rounded-xl focus:outline-none focus:border-[#5300b7] focus:bg-white transition-all" />
+                      <input required type="number" min="0" value={fabricForm.stock} onChange={e => setFabricForm(f => ({ ...f, stock: e.target.value }))} placeholder="500" className="w-full text-sm p-3 bg-[#f9f1ff] border border-[#ccc3d7]/40 rounded-xl focus:outline-none focus:border-[#5300b7] focus:bg-white transition-all" />
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-semibold text-[#4a4455] block mb-1">Material Image (Optional)</label>
