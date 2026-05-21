@@ -26,6 +26,7 @@ export default function DesignerDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeNav, setActiveNav] = useState("overview");
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const [pName, setPName] = useState("");
   const [pDesc, setPDesc] = useState("");
@@ -71,6 +72,27 @@ export default function DesignerDashboard() {
       setUploadSuccess(true); setPName(""); setPDesc(""); setPPrice(""); setPStock(""); setPImage("");
       fetchDesignerData();
     } catch (err: any) { setError(err.message || "Product upload failed."); }
+    finally { setUploadLoading(false); }
+  };
+
+  const handleProductUpdate = async (e: React.FormEvent) => {
+    e.preventDefault(); setError(""); setUploadLoading(true);
+    if (!editingProduct) return;
+    try {
+      const priceNum = Number(editingProduct.price); const stockNum = Number(editingProduct.stock);
+      if (isNaN(priceNum) || priceNum <= 0) throw new Error("Price must be a valid positive number.");
+      if (isNaN(stockNum) || stockNum < 0) throw new Error("Stock must be a valid non-negative number.");
+      
+      await productsService.update(editingProduct.id, { 
+        name: editingProduct.name, 
+        description: editingProduct.description, 
+        price: priceNum, 
+        category: editingProduct.category, 
+        stock: stockNum 
+      });
+      setEditingProduct(null);
+      fetchDesignerData();
+    } catch (err: any) { setError(err.message || "Product update failed."); }
     finally { setUploadLoading(false); }
   };
 
@@ -262,11 +284,12 @@ export default function DesignerDashboard() {
                         <h4 className="text-xs font-semibold text-[#1d1a24] line-clamp-1">{p.name}</h4>
                         <p className="text-xs text-[#4a4455]">{p.category}</p>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right flex flex-col items-end gap-2">
                         <p className="text-sm font-semibold text-[#1d1a24]">₹{p.price}</p>
-                        <div className="mt-1">
-                          <StatusBadge type="product" status={p.status} />
-                        </div>
+                        <StatusBadge type="product" status={p.status} />
+                        <button onClick={() => setEditingProduct(p)} className="text-[10px] uppercase font-bold tracking-wider text-[#5300b7] hover:underline">
+                          Edit
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -309,6 +332,31 @@ export default function DesignerDashboard() {
             </div>
           )}
         </main>
+
+        {/* Edit Modal */}
+        {editingProduct && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#1d1a24]/80 backdrop-blur-sm">
+            <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-display text-2xl font-medium text-[#1d1a24]">Edit Product</h3>
+                <button onClick={() => setEditingProduct(null)} className="text-[#4a4455] hover:text-red-500 transition-colors">
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+              </div>
+              <form onSubmit={handleProductUpdate} className="flex flex-col gap-4">
+                <input required value={editingProduct.name} onChange={e => setEditingProduct({ ...editingProduct, name: e.target.value })} placeholder="Product Name" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+                <div className="grid grid-cols-2 gap-4">
+                  <input required type="number" value={editingProduct.price} onChange={e => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })} placeholder="Price (₹)" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+                  <input required type="number" value={editingProduct.stock} onChange={e => setEditingProduct({ ...editingProduct, stock: Number(e.target.value) })} placeholder="Stock" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+                </div>
+                <textarea required value={editingProduct.description} onChange={e => setEditingProduct({ ...editingProduct, description: e.target.value })} placeholder="Description" rows={3} className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7] resize-none" />
+                <button type="submit" disabled={uploadLoading} className="w-full py-3 mt-2 bg-[#5300b7] hover:bg-[#5300b7]/90 rounded-full text-white text-sm font-semibold flex items-center justify-center transition-all disabled:opacity-50">
+                  {uploadLoading ? "Updating..." : "Save Changes"}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </ProtectedRoute>
   );

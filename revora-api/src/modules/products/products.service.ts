@@ -80,6 +80,33 @@ export class ProductsService {
     });
   }
 
+  async update(id: string, dto: Partial<CreateProductDto>, user: any) {
+    const product = await this.prisma.product.findUnique({
+      where: { id },
+    });
+
+    if (!product) throw new NotFoundException('Product not found');
+
+    if (user.role === 'DESIGNER') {
+      const designer = await this.prisma.designer.findUnique({ where: { userId: user.id } });
+      if (!designer || product.designerId !== designer.id) {
+        throw new ForbiddenException('You can only edit your own products');
+      }
+    }
+
+    return this.prisma.product.update({
+      where: { id },
+      data: {
+        ...(dto.name !== undefined && { name: dto.name }),
+        ...(dto.description !== undefined && { description: dto.description }),
+        ...(dto.price !== undefined && { price: dto.price }),
+        ...(dto.category !== undefined && { category: dto.category }),
+        ...(dto.stock !== undefined && { stock: dto.stock }),
+        ...(dto.images !== undefined && { images: dto.images }),
+      },
+    });
+  }
+
   async approve(id: string, adminId: string) {
     const product = await this.prisma.product.findUnique({ where: { id } });
     if (!product) throw new NotFoundException('Product not found');

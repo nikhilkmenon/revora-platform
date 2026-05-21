@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Body, Param, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, Query } from '@nestjs/common';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -37,6 +37,18 @@ export class ProductsController {
     @GetUser('id') userId: string,
   ) {
     return this.productsService.create(dto, userId);
+  }
+
+  // Designer and Admin — update product
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('DESIGNER', 'ADMIN', 'SUPER_ADMIN')
+  update(
+    @Param('id') id: string,
+    @Body() dto: Partial<CreateProductDto>,
+    @GetUser() user: any,
+  ) {
+    return this.productsService.update(id, dto, user);
   }
 
   // Admin only — approve

@@ -52,6 +52,18 @@ export const productsService = {
     return normalizeProduct(raw);
   },
 
+  async update(id: string, data: Partial<CreateProductPayload>): Promise<Product> {
+    let images = data.images;
+    if (!images && data.image) images = [data.image];
+    
+    const raw = await api.patch<any>(`products/${id}`, {
+      ...data,
+      images,
+      image: undefined,
+    });
+    return normalizeProduct(raw);
+  },
+
   async approve(id: string): Promise<Product> {
     const raw = await api.post<any>(`products/${id}/approve`);
     return normalizeProduct(raw);

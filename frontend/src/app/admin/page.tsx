@@ -21,7 +21,6 @@ const TABS: { key: AdminTab; label: string; icon: string }[] = [
   { key: "orders", label: "Escrows & Orders", icon: "payments" },
   { key: "fabrics", label: "Raw Materials", icon: "texture" },
 ];
-
 const FABRIC_CATEGORIES = ["Silk", "Wool", "Cotton", "Linen", "Cashmere", "Recycled Polyester", "Tencel Lyocell", "Hemp Blend"];
 
 export default function AdminDashboard() {
@@ -39,6 +38,10 @@ export default function AdminDashboard() {
   const [kycPage, setKycPage] = useState(1);
   const [productPage, setProductPage] = useState(1);
   const [orderPage, setOrderPage] = useState(1);
+
+  // Edit Product State
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editLoading, setEditLoading] = useState(false);
 
   // Fabric upload form
   const [fabricForm, setFabricForm] = useState({ name: "", description: "", pricePerYard: "", moq: "1", category: "Silk", stock: "", image: "" });
@@ -90,6 +93,26 @@ export default function AdminDashboard() {
   const handleDeleteProduct = (id: string) => {
     if (!confirm("Are you sure you want to delete this live product listing?")) return;
     act(`del-${id}`, () => productsService.remove(id));
+  };
+  const handleProductUpdate = async (e: React.FormEvent) => {
+    e.preventDefault(); setEditLoading(true);
+    if (!editingProduct) return;
+    try {
+      const priceNum = Number(editingProduct.price); const stockNum = Number(editingProduct.stock);
+      if (isNaN(priceNum) || priceNum <= 0) throw new Error("Price must be a valid positive number.");
+      if (isNaN(stockNum) || stockNum < 0) throw new Error("Stock must be a valid non-negative number.");
+      
+      await productsService.update(editingProduct.id, { 
+        name: editingProduct.name, 
+        description: editingProduct.description, 
+        price: priceNum, 
+        category: editingProduct.category, 
+        stock: stockNum 
+      });
+      setEditingProduct(null);
+      fetchAdminData();
+    } catch (err: any) { alert(err.message || "Product update failed."); }
+    finally { setEditLoading(false); }
   };
   const handleDeleteFabric = (id: string) => {
     if (!confirm("Are you sure you want to delete this raw material?")) return;
@@ -281,11 +304,15 @@ export default function AdminDashboard() {
                         <td className="py-4 px-6 text-right space-x-2">
                           {productMode === "pending" ? (
                             <>
+                              <button onClick={() => setEditingProduct(p)} className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-bold uppercase rounded-full hover:bg-blue-200 transition-all">Edit</button>
                               <button onClick={() => handleApproveProduct(p.id)} disabled={actionLoading === `prod-${p.id}`} className="px-3 py-1.5 bg-[#5300b7] text-white text-xs font-bold uppercase rounded-full hover:bg-[#5300b7]/80 disabled:opacity-50 transition-all">Approve</button>
                               <button onClick={() => handleRejectProduct(p.id)} disabled={actionLoading === `prod-${p.id}`} className="px-3 py-1.5 bg-red-600 text-white text-xs font-bold uppercase rounded-full hover:bg-red-700 disabled:opacity-50 transition-all">Reject</button>
                             </>
                           ) : (
-                            <button onClick={() => handleDeleteProduct(p.id)} disabled={actionLoading === `del-${p.id}`} className="px-3 py-1.5 bg-red-100 text-red-700 text-xs font-bold uppercase rounded-full hover:bg-red-200 disabled:opacity-50 transition-all">Delete Listing</button>
+                            <>
+                              <button onClick={() => setEditingProduct(p)} className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-bold uppercase rounded-full hover:bg-blue-200 transition-all">Edit</button>
+                              <button onClick={() => handleDeleteProduct(p.id)} disabled={actionLoading === `del-${p.id}`} className="px-3 py-1.5 bg-red-100 text-red-700 text-xs font-bold uppercase rounded-full hover:bg-red-200 disabled:opacity-50 transition-all">Delete Listing</button>
+                            </>
                           )}
                         </td>
                       </tr>
@@ -470,6 +497,32 @@ export default function AdminDashboard() {
         )}
 
       </main>
+
+      {/* Edit Modal */}
+      {editingProduct && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#1d1a24]/80 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-display text-2xl font-medium text-[#1d1a24]">Edit Product</h3>
+              <button onClick={() => setEditingProduct(null)} className="text-[#4a4455] hover:text-red-500 transition-colors">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <form onSubmit={handleProductUpdate} className="flex flex-col gap-4">
+              <input required value={editingProduct.name} onChange={e => setEditingProduct({ ...editingProduct, name: e.target.value })} placeholder="Product Name" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+              <div className="grid grid-cols-2 gap-4">
+                <input required type="number" value={editingProduct.price} onChange={e => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })} placeholder="Price (₹)" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+                <input required type="number" value={editingProduct.stock} onChange={e => setEditingProduct({ ...editingProduct, stock: Number(e.target.value) })} placeholder="Stock" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+              </div>
+              <textarea required value={editingProduct.description} onChange={e => setEditingProduct({ ...editingProduct, description: e.target.value })} placeholder="Description" rows={3} className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7] resize-none" />
+              <button type="submit" disabled={editLoading} className="w-full py-3 mt-2 bg-[#5300b7] hover:bg-[#5300b7]/90 rounded-full text-white text-sm font-semibold flex items-center justify-center transition-all disabled:opacity-50">
+                {editLoading ? "Updating..." : "Save Changes"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+      
       <Footer />
     </ProtectedRoute>
   );
