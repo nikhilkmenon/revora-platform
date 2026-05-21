@@ -427,9 +427,10 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-semibold text-[#4a4455] block mb-1">Category *</label>
-                      <select required value={fabricForm.category} onChange={e => setFabricForm(f => ({ ...f, category: e.target.value }))} className="w-full text-sm p-3 bg-[#f9f1ff] border border-[#ccc3d7]/40 rounded-xl focus:outline-none focus:border-[#5300b7] focus:bg-white transition-all">
-                        {FABRIC_CATEGORIES.map(c => <option key={c}>{c}</option>)}
-                      </select>
+                      <input required list="fabric-categories" value={fabricForm.category} onChange={e => setFabricForm(f => ({ ...f, category: e.target.value }))} placeholder="e.g. Silk" className="w-full text-sm p-3 bg-[#f9f1ff] border border-[#ccc3d7]/40 rounded-xl focus:outline-none focus:border-[#5300b7] focus:bg-white transition-all" />
+                      <datalist id="fabric-categories">
+                        {FABRIC_CATEGORIES.map(c => <option key={c} value={c} />)}
+                      </datalist>
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-semibold text-[#4a4455] block mb-1">Price (₹) *</label>
@@ -564,6 +565,10 @@ export default function AdminDashboard() {
             </div>
             <form onSubmit={handleFabricUpdate} className="flex flex-col gap-4">
               <input required value={editingFabric.name} onChange={e => setEditingFabric({ ...editingFabric, name: e.target.value })} placeholder="Material Name" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+              <input required list="edit-fabric-categories" value={editingFabric.category} onChange={e => setEditingFabric({ ...editingFabric, category: e.target.value })} placeholder="Category" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+              <datalist id="edit-fabric-categories">
+                {FABRIC_CATEGORIES.map(c => <option key={c} value={c} />)}
+              </datalist>
               <div className="grid grid-cols-3 gap-4">
                 <input required type="number" step="0.01" value={editingFabric.pricePerYard} onChange={e => setEditingFabric({ ...editingFabric, pricePerYard: Number(e.target.value) })} placeholder="Price (₹)" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
                 <input required type="number" value={editingFabric.stock} onChange={e => setEditingFabric({ ...editingFabric, stock: Number(e.target.value) })} placeholder="Stock" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
