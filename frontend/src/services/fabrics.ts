@@ -50,6 +50,11 @@ export const fabricsService = {
     return normalizeFabric(raw);
   },
 
+  async update(id: string, data: Partial<CreateFabricDto>): Promise<Fabric> {
+    const raw = await api.patch<any>(`fabrics/${id}`, data);
+    return normalizeFabric(raw);
+  },
+
   async remove(id: string): Promise<void> {
     await api.delete(`fabrics/${id}`);
   },

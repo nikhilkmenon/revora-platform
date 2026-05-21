@@ -43,9 +43,11 @@ export default function AdminDashboard() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editLoading, setEditLoading] = useState(false);
 
-  // Fabric upload form
+  // Fabric State
   const [fabricForm, setFabricForm] = useState({ name: "", description: "", pricePerYard: "", moq: "1", category: "Silk", stock: "", image: "" });
   const [fabricLoading, setFabricLoading] = useState(false);
+  const [editingFabric, setEditingFabric] = useState<Fabric | null>(null);
+  const [editFabricLoading, setEditFabricLoading] = useState(false);
   const [fabricSuccess, setFabricSuccess] = useState(false);
 
   const PAGE_SIZE = 10;
@@ -114,6 +116,32 @@ export default function AdminDashboard() {
     } catch (err: any) { alert(err.message || "Product update failed."); }
     finally { setEditLoading(false); }
   };
+  const handleFabricUpdate = async (e: React.FormEvent) => {
+    e.preventDefault(); setEditFabricLoading(true);
+    if (!editingFabric) return;
+    try {
+      const priceNum = Number(editingFabric.pricePerYard);
+      const stockNum = Number(editingFabric.stock);
+      const moqNum = Number(editingFabric.moq);
+      
+      if (isNaN(priceNum) || priceNum <= 0) throw new Error("Price must be a valid positive number.");
+      if (isNaN(stockNum) || stockNum < 0) throw new Error("Stock must be a valid non-negative number.");
+      if (isNaN(moqNum) || moqNum < 1) throw new Error("MOQ must be at least 1.");
+      
+      await fabricsService.update(editingFabric.id, { 
+        name: editingFabric.name, 
+        description: editingFabric.description, 
+        pricePerYard: priceNum, 
+        category: editingFabric.category, 
+        stock: stockNum,
+        moq: moqNum
+      });
+      setEditingFabric(null);
+      fetchAdminData();
+    } catch (err: any) { alert(err.message || "Fabric update failed."); }
+    finally { setEditFabricLoading(false); }
+  };
+
   const handleDeleteFabric = (id: string) => {
     if (!confirm("Are you sure you want to delete this raw material?")) return;
     act(`delfab-${id}`, () => fabricsService.remove(id));
@@ -483,7 +511,8 @@ export default function AdminDashboard() {
                           <td className="py-4 px-6 text-[#4a4455]">{f.category}</td>
                           <td className="py-4 px-6 font-semibold text-[#5300b7]">₹{f.price.toLocaleString()}</td>
                           <td className="py-4 px-6 text-[#4a4455]">{f.stock}</td>
-                          <td className="py-4 px-6 text-right">
+                          <td className="py-4 px-6 text-right space-x-2">
+                            <button onClick={() => setEditingFabric(f)} className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs font-bold uppercase rounded-full hover:bg-blue-200 transition-all">Edit</button>
                             <button onClick={() => handleDeleteFabric(f.id)} disabled={actionLoading === `delfab-${f.id}`} className="px-3 py-1.5 bg-red-100 text-red-700 text-xs font-bold uppercase rounded-full hover:bg-red-200 disabled:opacity-50 transition-all">Delete</button>
                           </td>
                         </tr>
@@ -498,7 +527,7 @@ export default function AdminDashboard() {
 
       </main>
 
-      {/* Edit Modal */}
+      {/* Edit Product Modal */}
       {editingProduct && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#1d1a24]/80 backdrop-blur-sm">
           <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
@@ -523,6 +552,32 @@ export default function AdminDashboard() {
         </div>
       )}
       
+      {/* Edit Fabric Modal */}
+      {editingFabric && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#1d1a24]/80 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-display text-2xl font-medium text-[#1d1a24]">Edit Raw Material</h3>
+              <button onClick={() => setEditingFabric(null)} className="text-[#4a4455] hover:text-red-500 transition-colors">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <form onSubmit={handleFabricUpdate} className="flex flex-col gap-4">
+              <input required value={editingFabric.name} onChange={e => setEditingFabric({ ...editingFabric, name: e.target.value })} placeholder="Material Name" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+              <div className="grid grid-cols-3 gap-4">
+                <input required type="number" step="0.01" value={editingFabric.pricePerYard} onChange={e => setEditingFabric({ ...editingFabric, pricePerYard: Number(e.target.value) })} placeholder="Price (₹)" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+                <input required type="number" value={editingFabric.stock} onChange={e => setEditingFabric({ ...editingFabric, stock: Number(e.target.value) })} placeholder="Stock" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+                <input required type="number" value={editingFabric.moq} onChange={e => setEditingFabric({ ...editingFabric, moq: Number(e.target.value) })} placeholder="MOQ" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+              </div>
+              <textarea required value={editingFabric.description} onChange={e => setEditingFabric({ ...editingFabric, description: e.target.value })} placeholder="Description" rows={3} className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7] resize-none" />
+              <button type="submit" disabled={editFabricLoading} className="w-full py-3 mt-2 bg-[#5300b7] hover:bg-[#5300b7]/90 rounded-full text-white text-sm font-semibold flex items-center justify-center transition-all disabled:opacity-50">
+                {editFabricLoading ? "Updating..." : "Save Changes"}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </ProtectedRoute>
   );

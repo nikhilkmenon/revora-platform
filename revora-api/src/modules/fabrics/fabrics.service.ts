@@ -62,6 +62,24 @@ export class FabricsService {
     });
   }
 
+  async update(id: string, dto: Partial<CreateFabricDto>) {
+    const fabric = await this.prisma.fabric.findUnique({ where: { id } });
+    if (!fabric) throw new NotFoundException('Fabric not found');
+
+    return this.prisma.fabric.update({
+      where: { id },
+      data: {
+        ...(dto.name !== undefined && { name: dto.name }),
+        ...(dto.description !== undefined && { description: dto.description }),
+        ...(dto.pricePerYard !== undefined && { pricePerYard: dto.pricePerYard }),
+        ...(dto.moq !== undefined && { moq: dto.moq }),
+        ...(dto.stock !== undefined && { stock: dto.stock }),
+        ...(dto.images !== undefined && { images: dto.images }),
+        ...(dto.category !== undefined && { category: dto.category }),
+      },
+    });
+  }
+
   async remove(id: string) {
     const fabric = await this.prisma.fabric.findUnique({ where: { id } });
     if (!fabric) {

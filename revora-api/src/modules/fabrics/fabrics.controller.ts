@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
 import { FabricsService } from './fabrics.service';
 import { CreateFabricDto } from './dto/create-fabric.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -28,6 +28,16 @@ export class FabricsController {
     @GetUser('id') userId: string,
   ) {
     return this.fabricsService.create(dto, userId);
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'SUPER_ADMIN', 'SUPPLIER')
+  update(
+    @Param('id') id: string,
+    @Body() dto: Partial<CreateFabricDto>,
+  ) {
+    return this.fabricsService.update(id, dto);
   }
 
   @Delete(':id')
