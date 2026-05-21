@@ -126,7 +126,7 @@ export default function AdminDashboard() {
       
       if (isNaN(priceNum) || priceNum <= 0) throw new Error("Price must be a valid positive number.");
       if (isNaN(stockNum) || stockNum < 0) throw new Error("Stock must be a valid non-negative number.");
-      if (isNaN(moqNum) || moqNum < 1) throw new Error("MOQ must be at least 1.");
+      if (isNaN(moqNum) || moqNum < 0) throw new Error("MOQ must be a non-negative number.");
       
       await fabricsService.update(editingFabric.id, { 
         name: editingFabric.name, 
@@ -437,7 +437,7 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-semibold text-[#4a4455] block mb-1">MOQ</label>
-                      <input type="number" min="1" value={fabricForm.moq} onChange={e => setFabricForm(f => ({ ...f, moq: e.target.value }))} placeholder="10" className="w-full text-sm p-3 bg-[#f9f1ff] border border-[#ccc3d7]/40 rounded-xl focus:outline-none focus:border-[#5300b7] focus:bg-white transition-all" />
+                      <input type="number" min="0" value={fabricForm.moq} onChange={e => setFabricForm(f => ({ ...f, moq: e.target.value }))} placeholder="10" className="w-full text-sm p-3 bg-[#f9f1ff] border border-[#ccc3d7]/40 rounded-xl focus:outline-none focus:border-[#5300b7] focus:bg-white transition-all" />
                     </div>
                     <div>
                       <label className="text-[10px] uppercase font-semibold text-[#4a4455] block mb-1">Stock *</label>
@@ -567,7 +567,7 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-3 gap-4">
                 <input required type="number" step="0.01" value={editingFabric.pricePerYard} onChange={e => setEditingFabric({ ...editingFabric, pricePerYard: Number(e.target.value) })} placeholder="Price (₹)" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
                 <input required type="number" value={editingFabric.stock} onChange={e => setEditingFabric({ ...editingFabric, stock: Number(e.target.value) })} placeholder="Stock" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
-                <input required type="number" value={editingFabric.moq} onChange={e => setEditingFabric({ ...editingFabric, moq: Number(e.target.value) })} placeholder="MOQ" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
+                <input required type="number" min="0" value={editingFabric.moq} onChange={e => setEditingFabric({ ...editingFabric, moq: Number(e.target.value) })} placeholder="MOQ" className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7]" />
               </div>
               <textarea required value={editingFabric.description} onChange={e => setEditingFabric({ ...editingFabric, description: e.target.value })} placeholder="Description" rows={3} className="w-full bg-[#dfd7e5]/40 border border-[#ccc3d7]/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#5300b7] resize-none" />
               <button type="submit" disabled={editFabricLoading} className="w-full py-3 mt-2 bg-[#5300b7] hover:bg-[#5300b7]/90 rounded-full text-white text-sm font-semibold flex items-center justify-center transition-all disabled:opacity-50">

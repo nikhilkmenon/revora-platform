@@ -122,22 +122,31 @@ export default function ProductDetailPage() {
             {/* Quantity */}
             <div className="mb-8">
               <span className="text-xs font-semibold text-[#1d1a24] uppercase tracking-widest block mb-3">Quantity</span>
-              <div className="flex items-center border border-[#ccc3d7] rounded-2xl overflow-hidden bg-[#f9f1ff] w-fit">
-                <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-12 h-12 hover:bg-[#e8e0ee] flex items-center justify-center font-bold text-[#5300b7] transition-colors">−</button>
-                <span className="w-12 text-center text-sm font-semibold">{quantity}</span>
-                <button onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))} className="w-12 h-12 hover:bg-[#e8e0ee] flex items-center justify-center font-bold text-[#5300b7] transition-colors">+</button>
-              </div>
-              <p className="mt-2 text-xs text-[#4a4455]">{product.stock} units available · SKU: {product.sku}</p>
+              {product.stock > 0 ? (
+                <>
+                  <div className="flex items-center border border-[#ccc3d7] rounded-2xl overflow-hidden bg-[#f9f1ff] w-fit">
+                    <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-12 h-12 hover:bg-[#e8e0ee] flex items-center justify-center font-bold text-[#5300b7] transition-colors">−</button>
+                    <span className="w-12 text-center text-sm font-semibold">{quantity}</span>
+                    <button onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))} className="w-12 h-12 hover:bg-[#e8e0ee] flex items-center justify-center font-bold text-[#5300b7] transition-colors">+</button>
+                  </div>
+                  <p className="mt-2 text-xs text-[#4a4455]">{product.stock} units available · SKU: {product.sku}</p>
+                </>
+              ) : (
+                <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl inline-block">
+                  <p className="text-sm font-semibold text-red-600 uppercase tracking-wider">Out of Stock</p>
+                </div>
+              )}
             </div>
 
             {/* Actions */}
             <div className="flex flex-col gap-3 mb-8">
               <button
                 onClick={addToCart}
-                className={`w-full py-4 rounded-full font-semibold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg ${addedToCart ? "bg-green-500 text-white" : "bg-[#5300b7] text-white hover:scale-[1.02] shadow-[#5300b7]/20"}`}
+                disabled={product.stock <= 0}
+                className={`w-full py-4 rounded-full font-semibold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg ${product.stock <= 0 ? "bg-[#e8e0ee] text-[#7b7486] cursor-not-allowed shadow-none" : addedToCart ? "bg-green-500 text-white" : "bg-[#5300b7] text-white hover:scale-[1.02] shadow-[#5300b7]/20"}`}
               >
-                <span className="material-symbols-outlined text-sm">{addedToCart ? "check_circle" : "shopping_bag"}</span>
-                {addedToCart ? "Added to Bag!" : "Add to Cart"}
+                <span className="material-symbols-outlined text-sm">{product.stock <= 0 ? "block" : addedToCart ? "check_circle" : "shopping_bag"}</span>
+                {product.stock <= 0 ? "Out of Stock" : addedToCart ? "Added to Bag!" : "Add to Cart"}
               </button>
               <button className="w-full py-4 rounded-full bg-white text-[#5300b7] border border-[#5300b7] font-semibold text-sm uppercase tracking-wider hover:bg-[#5300b7]/5 transition-colors flex items-center justify-center gap-2">
                 <span className="material-symbols-outlined text-sm">favorite</span>

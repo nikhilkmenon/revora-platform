@@ -17,7 +17,6 @@ export class ProductsService {
       where.status = status;
     } else {
       where.status = 'APPROVED';
-      where.stock = { gt: 0 }; // Automatically remove out of stock products from the shop
     }
     if (category) where.category = category;
     if (search) where.OR = [

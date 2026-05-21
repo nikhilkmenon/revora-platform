@@ -121,11 +121,15 @@ export default function ShopPage() {
                     <button onClick={() => toggleWishlist(product.id)} className="absolute top-6 right-6 p-2 bg-white/80 backdrop-blur-md rounded-full text-[#1d1a24] hover:text-[#ba1a1a] transition-all">
                       <span className="material-symbols-outlined text-lg">{wishlist.has(product.id) ? "favorite" : "favorite_border"}</span>
                     </button>
-                    {product.stock < 5 && (
+                    {product.stock <= 0 ? (
+                      <div className="absolute bottom-6 left-6">
+                        <span className="px-3 py-1 bg-red-600 text-white backdrop-blur-md rounded-full text-[10px] uppercase tracking-wider font-semibold shadow-lg">Out of Stock</span>
+                      </div>
+                    ) : product.stock < 5 ? (
                       <div className="absolute bottom-6 left-6">
                         <span className="px-3 py-1 bg-white/80 text-[#1d1a24] backdrop-blur-md rounded-full text-[10px] uppercase tracking-wider font-semibold">Low Stock</span>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                   <div className="p-6 flex flex-col flex-grow">
                     <div className="flex justify-between items-start mb-2">
@@ -137,10 +141,18 @@ export default function ShopPage() {
                     </div>
                     <p className="text-sm text-[#4a4455] line-clamp-2 mb-4 leading-relaxed">{product.description}</p>
                     <div className="mt-auto pt-4 flex items-center justify-between border-t border-[#ccc3d7]/10">
-                      <span className="text-xs font-bold text-green-600 flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />In Stock ({product.stock})
-                      </span>
-                      <button onClick={() => addToCart(product)} className="text-sm font-semibold text-[#5300b7] opacity-0 group-hover:opacity-100 transition-opacity">Quick Add</button>
+                      {product.stock > 0 ? (
+                        <>
+                          <span className="text-xs font-bold text-green-600 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />In Stock ({product.stock})
+                          </span>
+                          <button onClick={() => addToCart(product)} className="text-sm font-semibold text-[#5300b7] opacity-0 group-hover:opacity-100 transition-opacity">Quick Add</button>
+                        </>
+                      ) : (
+                        <span className="text-xs font-bold text-red-600 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />Sold Out
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
