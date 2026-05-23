@@ -24,6 +24,10 @@ export const authService = {
     return api.post<AuthResponse>("auth/login", data);
   },
 
+  async updateRole(role: string): Promise<AuthResponse> {
+    return api.put<AuthResponse>("auth/role", { role });
+  },
+
   async getMe(): Promise<User> {
     return api.get<User>("auth/me");
   },

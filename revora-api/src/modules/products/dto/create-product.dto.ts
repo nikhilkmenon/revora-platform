@@ -9,7 +9,7 @@ export class CreateProductDto {
   name: string;
 
   @IsString()
-  @MaxLength(2000)
+  @MaxLength(10000)
   @Transform(({ value }) => sanitizeHtml(value, { allowedTags: ['b', 'i', 'p', 'br'] }))
   description: string;
 

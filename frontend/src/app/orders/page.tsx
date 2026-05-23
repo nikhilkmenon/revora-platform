@@ -106,17 +106,17 @@ export default function OrdersPage() {
                     {order.items.map(item => (
                       <div key={item.id} className="flex items-center gap-3">
                         <div className="w-14 h-16 rounded-xl overflow-hidden bg-[#f9f1ff] flex-shrink-0">
-                          {item.product?.image ? (
-                            <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
+                          {item.product?.image || item.fabric?.images?.[0] || item.fabric?.image ? (
+                            <img src={item.product?.image || item.fabric?.images?.[0] || item.fabric?.image} alt={item.product?.name || item.fabric?.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full bg-[#dfd7e5]" />
                           )}
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-[#1d1a24] line-clamp-1">{item.product?.name ?? "Product"}</p>
+                          <p className="text-sm font-semibold text-[#1d1a24] line-clamp-1">{item.product?.name ?? item.fabric?.name ?? "Item"}</p>
                           <p className="text-xs text-[#4a4455]">Qty: {item.quantity} · ₹{item.price}</p>
-                          {item.product?.designer && (
-                            <p className="text-[10px] text-[#7b7486] uppercase tracking-wider">{item.product.designer.brandName}</p>
+                          {(item.product?.designer || item.fabric?.supplier) && (
+                            <p className="text-[10px] text-[#7b7486] uppercase tracking-wider">{item.product?.designer?.brandName || item.fabric?.supplier?.companyName || "Revora Sourcing"}</p>
                           )}
                         </div>
                       </div>

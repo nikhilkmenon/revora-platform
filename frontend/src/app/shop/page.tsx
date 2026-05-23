@@ -21,6 +21,7 @@ export default function ShopPage() {
   const [maxPrice, setMaxPrice] = useState<number | "">("");
   const [sort, setSort] = useState("newest");
   const [wishlist, setWishlist] = useState<Set<string>>(new Set());
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => { 
     execute({ category: category || undefined, search: search || undefined });
@@ -135,7 +136,7 @@ export default function ShopPage() {
                     <div className="flex justify-between items-start mb-2">
                       <div>
                         <p className="text-xs text-[#4a4455] uppercase tracking-widest mb-1">{product.designer?.brandName || "Atelier Maison"}</p>
-                        <Link href={`/products/${product.id}`} className="font-display text-xl font-medium text-[#1d1a24] hover:text-[#5300b7] transition-colors line-clamp-1 block">{product.name}</Link>
+                        <button onClick={() => setSelectedProduct(product)} className="font-display text-xl font-medium text-[#1d1a24] hover:text-[#5300b7] transition-colors line-clamp-1 block text-left">{product.name}</button>
                       </div>
                       <span className="font-display text-xl font-medium text-[#5300b7]">₹{product.price.toLocaleString()}</span>
                     </div>
@@ -169,6 +170,48 @@ export default function ShopPage() {
           )}
         </section>
       </main>
+      {/* Quick View Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}>
+          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col md:flex-row overflow-hidden border border-[#ccc3d7]/30 relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-[#1d1a24] hover:bg-[#e8e0ee] z-10 transition-colors shadow-sm">
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            <div className="w-full md:w-1/2 bg-[#f9f1ff] relative min-h-[300px]">
+              <img src={selectedProduct.image} alt={selectedProduct.name} className="absolute inset-0 w-full h-full object-cover" />
+            </div>
+            <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col">
+              <p className="text-xs font-semibold text-[#5300b7] uppercase tracking-widest mb-2">{selectedProduct.category}</p>
+              <h2 className="font-display text-3xl font-bold text-[#1d1a24] mb-2">{selectedProduct.name}</h2>
+              <p className="text-[#4a4455] font-semibold uppercase tracking-wider text-sm mb-6 flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">storefront</span>
+                {selectedProduct.designer?.brandName || "Atelier Maison"}
+              </p>
+              <div className="font-display text-4xl font-medium text-[#5300b7] mb-8">₹{selectedProduct.price.toLocaleString()}</div>
+              
+              <div className="mb-8 flex-grow">
+                <h3 className="text-sm font-semibold text-[#1d1a24] uppercase tracking-wider mb-3">Description</h3>
+                <p className="text-[#4a4455] leading-relaxed text-sm whitespace-pre-wrap">{selectedProduct.description}</p>
+              </div>
+
+              <div className="flex items-center gap-4 mt-auto">
+                <button 
+                  onClick={() => { addToCart(selectedProduct); setSelectedProduct(null); }} 
+                  disabled={selectedProduct.stock <= 0}
+                  className="flex-grow h-14 bg-[#1d1a24] hover:bg-[#5300b7] text-white rounded-2xl font-semibold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                >
+                  <span className="material-symbols-outlined">shopping_bag</span>
+                  {selectedProduct.stock <= 0 ? "Out of Stock" : "Add to Bag"}
+                </button>
+                <button onClick={() => toggleWishlist(selectedProduct.id)} className="w-14 h-14 border-2 border-[#ccc3d7]/30 rounded-2xl flex items-center justify-center text-[#1d1a24] hover:bg-[#f9f1ff] transition-colors">
+                  <span className="material-symbols-outlined">{wishlist.has(selectedProduct.id) ? "favorite" : "favorite_border"}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );

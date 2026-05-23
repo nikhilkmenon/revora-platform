@@ -157,6 +157,8 @@ model Fabric {
   supplier    Supplier @relation(fields: [supplierId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  orderItems  OrderItem[]
 }
 
 // ── Orders ────────────────────────────────────────────────────────────
@@ -186,8 +188,10 @@ model OrderItem {
   id        String  @id @default(uuid())
   orderId   String
   order     Order   @relation(fields: [orderId], references: [id])
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  fabricId  String?
+  fabric    Fabric?  @relation(fields: [fabricId], references: [id])
   quantity  Int
   price     Decimal @db.Decimal(12,2)
 }

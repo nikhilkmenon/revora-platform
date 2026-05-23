@@ -122,7 +122,7 @@ export interface Order {
 export interface CreateOrderDto {
   address: any;
   txnId?: string;
-  items: { productId: string; quantity: number }[];
+  items: { productId?: string; fabricId?: string; quantity: number }[];
 }
 
 export interface RazorpayOrderResponse {
@@ -145,6 +145,7 @@ export interface CartItem {
   image?: string;
   quantity: number;
   designer?: string;
+  type?: 'product' | 'fabric';
 }
 
 export interface AdminStats {

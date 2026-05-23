@@ -8,7 +8,7 @@ export class OrdersService {
   async findByUser(userId: string) {
     return this.prisma.order.findMany({
       where: { userId },
-      include: { items: { include: { product: true } }, payment: true, tracking: true },
+      include: { items: { include: { product: true, fabric: true } }, payment: true, tracking: true },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -16,7 +16,7 @@ export class OrdersService {
   // BUG #23 FIX: Fetch all orders (For Admins)
   async findAll() {
     return this.prisma.order.findMany({
-      include: { items: { include: { product: true } }, payment: true, tracking: true },
+      include: { items: { include: { product: true, fabric: true } }, payment: true, tracking: true },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -43,7 +43,7 @@ export class OrdersService {
       },
       include: { 
         items: { 
-          include: { product: true } 
+          include: { product: true, fabric: true } 
         }, 
         payment: true, 
         tracking: true 
@@ -56,7 +56,7 @@ export class OrdersService {
   async getOrderById(orderId: string, userId: string) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
-      include: { items: { include: { product: true } }, payment: true, tracking: true },
+      include: { items: { include: { product: true, fabric: true } }, payment: true, tracking: true },
     });
     if (!order) throw new NotFoundException('Order not found');
     if (order.userId !== userId) throw new ForbiddenException('Access denied');

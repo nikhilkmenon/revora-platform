@@ -16,6 +16,8 @@ export default function TextilesPage() {
   const { addItem } = useCart();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedCerts, setSelectedCerts] = useState<Set<string>>(new Set());
+  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
+  const [selectedFabric, setSelectedFabric] = useState<Fabric | null>(null);
 
   useEffect(() => { execute({ category: selectedCategory || undefined }); }, [selectedCategory, execute]);
 
@@ -114,7 +116,7 @@ export default function TextilesPage() {
                   </div>
                   <div className="p-6 flex flex-col flex-grow bg-white">
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-display text-lg font-medium text-[#1d1a24]">{fabric.name}</h3>
+                      <button onClick={(e) => { e.stopPropagation(); setSelectedFabric(fabric); }} className="font-display text-lg font-medium text-[#1d1a24] text-left hover:text-[#5300b7] transition-colors">{fabric.name}</button>
                       <span className="font-display text-lg text-[#5300b7]">₹{fabric.price}</span>
                     </div>
                     <p className="text-sm text-[#4a4455] mb-4 leading-relaxed line-clamp-2">{fabric.description}</p>
@@ -134,7 +136,8 @@ export default function TextilesPage() {
                           price: fabric.price,
                           image: fabric.image,
                           quantity: 1,
-                          designer: fabric.supplier?.companyName || "Revora Sourcing"
+                          designer: fabric.supplier?.companyName || "Revora Sourcing",
+                          type: "fabric",
                         });
                         alert("Added to cart!");
                       }} 
@@ -149,6 +152,59 @@ export default function TextilesPage() {
           )}
         </section>
       </main>
+      {/* Quick View Modal */}
+      {selectedFabric && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={() => setSelectedFabric(null)}>
+          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col md:flex-row overflow-hidden border border-[#ccc3d7]/30 relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedFabric(null)} className="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-[#1d1a24] hover:bg-[#e8e0ee] z-10 transition-colors shadow-sm">
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            <div className="w-full md:w-1/2 bg-[#f9f1ff] relative min-h-[300px]">
+              <img src={selectedFabric.image} alt={selectedFabric.name} className="absolute inset-0 w-full h-full object-cover" />
+            </div>
+            <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col">
+              <p className="text-xs font-semibold text-[#5300b7] uppercase tracking-widest mb-2">{selectedFabric.category}</p>
+              <h2 className="font-display text-3xl font-bold text-[#1d1a24] mb-2">{selectedFabric.name}</h2>
+              <p className="text-[#4a4455] font-semibold uppercase tracking-wider text-sm mb-6 flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm">storefront</span>
+                {selectedFabric.supplier?.companyName || "Revora Sourcing"}
+              </p>
+              <div className="font-display text-4xl font-medium text-[#5300b7] mb-8">₹{selectedFabric.price.toLocaleString()}<span className="text-sm text-[#7b7486] font-body font-normal"> / yard</span></div>
+              
+              <div className="mb-8 flex-grow">
+                <h3 className="text-sm font-semibold text-[#1d1a24] uppercase tracking-wider mb-3">Description</h3>
+                <p className="text-[#4a4455] leading-relaxed text-sm whitespace-pre-wrap">{selectedFabric.description}</p>
+              </div>
+
+              <div className="flex items-center gap-4 mt-auto">
+                <button 
+                  onClick={() => { 
+                    addItem({
+                      id: selectedFabric.id,
+                      name: selectedFabric.name,
+                      price: selectedFabric.price,
+                      image: selectedFabric.image,
+                      quantity: 1,
+                      designer: selectedFabric.supplier?.companyName || "Revora Sourcing",
+                      type: "fabric",
+                    });
+                    setSelectedFabric(null); 
+                  }} 
+                  disabled={selectedFabric.stock <= 0}
+                  className="flex-grow h-14 bg-[#1d1a24] hover:bg-[#5300b7] text-white rounded-2xl font-semibold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                >
+                  <span className="material-symbols-outlined">shopping_bag</span>
+                  {selectedFabric.stock <= 0 ? "Out of Stock" : "Add to Bag"}
+                </button>
+                <button className="w-14 h-14 border-2 border-[#ccc3d7]/30 rounded-2xl flex items-center justify-center text-[#1d1a24] hover:bg-[#f9f1ff] transition-colors">
+                  <span className="material-symbols-outlined">favorite_border</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );

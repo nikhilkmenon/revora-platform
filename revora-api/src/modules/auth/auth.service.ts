@@ -160,6 +160,31 @@ export class AuthService {
     });
   }
 
+  // ── Update Role ──────────────────────────────────────────────────────
+  async updateRole(userId: string, role: string) {
+    if (!['BUYER', 'DESIGNER'].includes(role)) {
+      throw new ForbiddenException('Invalid role selection');
+    }
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: { role: role as any },
+    });
+
+    // Re-issue tokens with new role
+    const tokens = await this.generateTokens(user.id, user.email, user.role);
+    const hashedRefresh = await argon2.hash(tokens.refreshToken);
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken: hashedRefresh },
+    });
+
+    return {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      user: { id: user.id, email: user.email, name: user.name, role: user.role, createdAt: user.createdAt },
+    };
+  }
+
   // ── Google OAuth login ────────────────────────────────────────────────
   async googleLogin(googleUser: any) {
     let user = await this.prisma.user.findUnique({ where: { email: googleUser.email } });
@@ -220,7 +245,7 @@ export class AuthService {
     return {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
-      user: { id: user.id, email: user.email, name: user.name, role: user.role },
+      user: { id: user.id, email: user.email, name: user.name, role: user.role, createdAt: user.createdAt },
     };
   }
 

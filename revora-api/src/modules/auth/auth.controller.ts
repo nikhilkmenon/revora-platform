@@ -1,7 +1,8 @@
 import {
-  Controller, Post, Body, Req, Res, Get,
+  Controller, Post, Body, Req, Res, Get, Put,
   UseGuards, HttpCode, HttpStatus, UnauthorizedException,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Throttle } from '@nestjs/throttler';
 import { Request, Response } from 'express';
 import * as crypto from 'crypto';
@@ -107,6 +108,14 @@ export class AuthController {
     return { message: 'Logged out' };
   }
 
+  // ── Update Role (For new Google users) ──────────────────────────────
+  @Put('role')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async updateRole(@GetUser('id') userId: string, @Body('role') role: string) {
+    return this.authService.updateRole(userId, role);
+  }
+
   // ── Me ───────────────────────────────────────────────────────────────
   @Get('me')
   @UseGuards(JwtAuthGuard)
@@ -116,12 +125,13 @@ export class AuthController {
 
   // ── Google OAuth ─────────────────────────────────────────────────────
   @Get('google')
+  @UseGuards(AuthGuard('google'))
   googleAuth() {
     // Handled by Passport GoogleStrategy — redirect to Google
-    return { message: 'Redirect to Google' };
   }
 
   @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
   async googleCallback(@Req() req: any, @Res() res: Response) {
     const result = await this.authService.googleLogin(req.user);
     res.redirect(`${process.env.FRONTEND_URL}/auth/callback?code=${result.code}`);

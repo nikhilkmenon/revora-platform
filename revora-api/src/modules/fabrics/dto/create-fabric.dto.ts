@@ -7,7 +7,7 @@ export class CreateFabricDto {
   name: string;
 
   @IsString()
-  @MaxLength(2000)
+  @MaxLength(10000)
   description: string;
 
   @IsNumber()

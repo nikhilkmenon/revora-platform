@@ -3,7 +3,12 @@ import { Type } from 'class-transformer';
 
 class OrderItemDto {
   @IsString()
-  productId: string;
+  @IsOptional()
+  productId?: string;
+
+  @IsString()
+  @IsOptional()
+  fabricId?: string;
 
   @IsInt()
   @Min(1)

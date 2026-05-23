@@ -34,20 +34,38 @@ export class PaymentsService {
     return await this.prisma.$transaction(async (prisma) => {
       const products = await Promise.all(
         dto.items.map(async item => {
-          const product = await prisma.product.findUnique({ where: { id: item.productId } });
-          if (!product) throw new NotFoundException(`Product ${item.productId} not found`);
-          if (product.stock < item.quantity) throw new BadRequestException(`Insufficient stock for ${product.name}`);
-          
-          // Inventory locking (decrement stock)
-          await prisma.product.update({
-            where: { id: product.id },
-            data: { stock: { decrement: item.quantity } },
-          });
-          return product;
+          if (item.productId) {
+            const product = await prisma.product.findUnique({ where: { id: item.productId } });
+            if (!product) throw new NotFoundException(`Product ${item.productId} not found`);
+            if (product.stock < item.quantity) throw new BadRequestException(`Insufficient stock for ${product.name}`);
+            
+            // Inventory locking (decrement stock)
+            await prisma.product.update({
+              where: { id: product.id },
+              data: { stock: { decrement: item.quantity } },
+            });
+            return { type: 'product', data: product, item };
+          } else if (item.fabricId) {
+            const fabric = await prisma.fabric.findUnique({ where: { id: item.fabricId } });
+            if (!fabric) throw new NotFoundException(`Fabric ${item.fabricId} not found`);
+            if (fabric.stock < item.quantity) throw new BadRequestException(`Insufficient stock for ${fabric.name}`);
+            
+            // Inventory locking (decrement stock)
+            await prisma.fabric.update({
+              where: { id: fabric.id },
+              data: { stock: { decrement: item.quantity } },
+            });
+            return { type: 'fabric', data: fabric, item };
+          } else {
+            throw new BadRequestException("Item must have either productId or fabricId");
+          }
         }),
       );
 
-      const total = products.reduce((sum, product, i) => sum + Number(product.price) * dto.items[i].quantity, 0);
+      const total = products.reduce((sum, p) => {
+        const price = p.type === 'product' ? (p.data as any).price : (p.data as any).pricePerYard;
+        return sum + Number(price) * p.item.quantity;
+      }, 0);
 
       // Order expiry set to 15 minutes
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
@@ -61,10 +79,10 @@ export class PaymentsService {
           status: 'PENDING',
           expiresAt,
           items: {
-            create: dto.items.map((item, i) => ({
-              productId: item.productId,
-              quantity: item.quantity,
-              price: products[i].price,
+            create: products.map((p) => ({
+              ...(p.type === 'product' ? { productId: p.data.id } : { fabricId: p.data.id }),
+              quantity: p.item.quantity,
+              price: p.type === 'product' ? (p.data as any).price : (p.data as any).pricePerYard,
             })),
           },
           payment: {

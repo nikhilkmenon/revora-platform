@@ -40,7 +40,7 @@ export const Navbar: React.FC = () => {
         address: { ...addressForm, deliveryTime: calculateDeliveryTime() },
         txnId: "RAZORPAY_FLOW",
         items: cartItems.map(item => ({
-          productId: item.id,
+          ...(item.type === 'fabric' ? { fabricId: item.id } : { productId: item.id }),
           quantity: item.quantity,
         }))
       });
